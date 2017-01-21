@@ -1,4 +1,5 @@
 ﻿using Assets.Code.Networking;
+using Assets.Code.Profile;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,11 @@ namespace Assets.Code.Menu
         [SerializeField] private Canvas _canvas;
 
         [SerializeField] private HostOptionsCanvasController _hostCanvas;
+        [SerializeField] private PlayerOptionsCanvasController _playerOptionsCanvas;
         [SerializeField] private FindServerCanvasController _findCanvas;
 
         [SerializeField] private Button _hostButton;
+        [SerializeField] private Button _playerOptionsButton;
         [SerializeField] private Button _findButton;
         [SerializeField] private Button _exitButton;
         
@@ -22,6 +25,7 @@ namespace Assets.Code.Menu
         protected void Awake()
         {
             _hostButton.onClick.AddListener(OnHostClicked);
+            _playerOptionsButton.onClick.AddListener(OnPlayerOptionsClicked);
             _findButton.onClick.AddListener(OnFindClicked);
             _exitButton.onClick.AddListener(OnExitClicked);
         }
@@ -40,6 +44,24 @@ namespace Assets.Code.Menu
             HideCanvas();
 
             _hostCanvas.StartSession(new HostOptionsSession
+            {
+                OnConfirmed = result =>
+                {
+                    ShowCanvas();
+                    // TODO: START SERVER
+                },
+                OnCancelled = () =>
+                {
+                    ShowCanvas();
+                }
+            });
+        }
+
+        private void OnPlayerOptionsClicked()
+        {
+            HideCanvas();
+
+            _playerOptionsCanvas.StartSession(new PlayerOptionsSession
             {
                 OnConfirmed = result =>
                 {
