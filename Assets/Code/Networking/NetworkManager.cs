@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Code.Networking
 {
-    class NetworkManager : MonoBehaviour
+    class NetworkManager : MonoBehaviour, IResolveable
     {
         private const string GameName = "wavey_waves";
         public HostData[] HostList;

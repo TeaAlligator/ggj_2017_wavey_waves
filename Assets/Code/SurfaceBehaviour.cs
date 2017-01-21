@@ -7,6 +7,7 @@ namespace Assets.Code
 	public class SurfaceBehaviour : MonoBehaviour
 	{
 		[SerializeField] private MeshFilter _meshField;
+		[SerializeField] private Renderer _renderer;
 
 		public List<WaveOriginData> Waves = new List<WaveOriginData>();
 
@@ -16,34 +17,47 @@ namespace Assets.Code
 		void Start ()
 		{
 			WaveOriginData test = new WaveOriginData();
-			test.Magnitude = 0.2f;
+			test.Magnitude = 1.0f;
 			test.Origin = new Vector3(5, 0, 5);
-			test.Age = 1;
+			test.Init();
 			Waves.Add(test);
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-			Vector2 xz = new Vector2(_meshField.mesh.vertices[0].x - 10, _meshField.mesh.vertices[0].z - 10);
-			float newy = -Mathf.Cos(2*(-Time.deltaTime + (xz).magnitude));
-			int t;
-			t = 0;
-			//for (uint i = 0; i < _meshField.mesh.vertices.Length; i++)
-			//{
-			//	Vector2 xz = new Vector2(_meshField.mesh.vertices[i].x, _meshField.mesh.vertices[i].z);
-			//	_meshField.mesh.vertices[i].y = Mathf.Cos(-Time.deltaTime*2.0f + (xz * 20.0f).magnitude)*0.02f;
-			//}
-
-			// track and remove aged waves
-			foreach (WaveOriginData wave in Waves)
+			if (Waves.Count > 0)
 			{
-				if (wave.Age >= WaveExpirationTime)
+				List<int> deadWaves = new List<int>();
+				Vector4[] data = new Vector4[Waves.Count];
+
+				for (int i = 0; i < Waves.Count; i++)
 				{
-					RemoveWave(wave);
+					Waves[i].Update();
+					
+					data[i] = new Vector4(Waves[i].Origin.x, Waves[i].Origin.z, Waves[i].PercentLife, Waves[i].Magnitude);
+
+					if (Waves[i].Age >= WaveOriginData.WAVE_LIFETIME)
+					{
+						deadWaves.Add(i);
+					}
 				}
-				wave.Update();
+
+				_renderer.material.SetVectorArray("waves", data);
+
+				for (int i = deadWaves.Count - 1; i >= 0; i--)
+				{
+					Waves.Remove(Waves[deadWaves[i]]);
+				}
 			}
+			else
+			{
+				// or switch shader
+				Vector4[] data = new Vector4[1];
+				data[0] = new Vector4(0,0,1,0);
+				_renderer.material.SetVectorArray("waves", data);
+			}
+
 		}
 
 		public List<Vector3> GetClosestVerts(int numVertices, Vector3 target)
@@ -67,9 +81,6 @@ namespace Assets.Code
 		private void RemoveWave(WaveOriginData wave)
 		{
 			Waves.Remove(wave);
-			// cull wave
-			int w;
-			w = 0;
 		}
 
 		public void AddWave(WaveOriginData wave)

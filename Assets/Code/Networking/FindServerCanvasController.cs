@@ -23,10 +23,10 @@ namespace Assets.Code.Networking
         [SerializeField] private Button _connectButton;
         [SerializeField] private Button _refreshButton;
         [SerializeField] private Button _cancelButton;
-
-        [SerializeField] private NetworkManager _network;
-
+        
         [SerializeField] private ServerListing _listingPrefab;
+        
+        [AutoResolve] private NetworkManager _network;
 
         private List<ServerListing> _listings; 
 
@@ -34,13 +34,15 @@ namespace Assets.Code.Networking
         private FindServerSession _session;
         private SubscribedEventToken _onNewHostList;
 
-        public void Awake()
+        protected override void Awake()
         {
             _listings = new List<ServerListing>();
 
             _connectButton.onClick.AddListener(OnConnectButtonClicked);
             _refreshButton.onClick.AddListener(OnRefreshButtonClicked);
             _cancelButton.onClick.AddListener(OnCancelButtonClicked);
+            
+            base.Awake();
         }
         
         public void StartSession(FindServerSession session)

@@ -18,16 +18,18 @@ namespace Assets.Code.Menu
         [SerializeField] private Button _findButton;
         [SerializeField] private Button _exitButton;
 
-        [SerializeField] private NetworkManager _network;
+        [AutoResolve] private NetworkManager _network;
 
         private MainMenuSession _session;
 
-        protected void Awake()
+        protected override void Awake()
         {
             _hostButton.onClick.AddListener(OnHostClicked);
             _playerOptionsButton.onClick.AddListener(OnPlayerOptionsClicked);
             _findButton.onClick.AddListener(OnFindClicked);
             _exitButton.onClick.AddListener(OnExitClicked);
+            
+            base.Awake();
         }
 
         public void StartSession(MainMenuSession session)
