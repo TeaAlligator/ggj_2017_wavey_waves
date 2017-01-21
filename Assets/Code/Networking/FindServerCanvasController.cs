@@ -50,6 +50,7 @@ namespace Assets.Code.Networking
             ShowCanvas();
             RefreshServers();
 
+            _currentSelection.WasSuccessful = false;
             _onNewHostList = _network.OnNewHostList.Subscribe(OnNewHostList);
 
             _session = session;
@@ -91,7 +92,7 @@ namespace Assets.Code.Networking
         {
             CloseSession();
 
-            _session.OnCancelled();
+            _session.OnConfirmed(_currentSelection);
             _session = null;
         }
 

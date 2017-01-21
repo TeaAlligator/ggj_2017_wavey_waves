@@ -47,7 +47,10 @@ namespace Assets.Code.Menu
             {
                 OnConfirmed = result =>
                 {
-                    _network.StartServer(result.Details);
+                    if (result.WasSuccessful)
+                        _network.StartServer(result.Details);
+                    else
+                        ShowCanvas();
                 },
                 OnCancelled = () =>
                 {
@@ -81,7 +84,10 @@ namespace Assets.Code.Menu
             {
                 OnConfirmed = result =>
                 {
-                    _network.JoinServer(result.Server);
+                    if (result.WasSuccessful)
+                        _network.JoinServer(result.Server);
+                    else
+                        ShowCanvas();
                 },
                 OnCancelled = () =>
                 {
