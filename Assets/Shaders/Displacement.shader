@@ -13,7 +13,7 @@
 		Pass
 		{
 			CGPROGRAM
-			#define MAX_WAVES 1
+			#define MAX_WAVES 2
 			#define WAVE_VELOCITY 1.0f
 			#pragma vertex vert
 			#pragma fragment frag

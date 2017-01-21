@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WaveOriginData
 {
-	public static readonly uint WAVE_LIFETIME = 100;
+	public static readonly uint WAVE_LIFETIME = 5;
     public readonly static uint MAX_WAVES = 1;
 
 	public Vector3 Origin;
