@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Code.Player
 {
-    class PlayManager : MonoBehaviour, IResolveable
+    class PlayerManager : MonoBehaviour, IResolveable
     {
         [SerializeField] private Cursor _cursorPrefab;
 
