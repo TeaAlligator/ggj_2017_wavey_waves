@@ -2,7 +2,7 @@
 
 namespace Assets.Code
 {
-    class ProjectileController : MonoBehaviour
+    class Projectile : MonoBehaviour
     {
         public virtual void Activate()
         {

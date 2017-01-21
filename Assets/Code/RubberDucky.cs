@@ -2,7 +2,7 @@
 
 namespace Assets.Code
 {
-    class RubberDuckyController : MonoBehaviour {
+    class RubberDucky : MonoBehaviour {
 
         // Use this for initialization
         void Start () {
