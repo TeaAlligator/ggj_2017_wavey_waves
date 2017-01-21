@@ -10,9 +10,10 @@ public class TestWaveDriver : MonoBehaviour
 	// Use this for initialization
 	void Start()
     {
-        waves[0].Position = new Vector2(10, 20);
-        waves[0].Magnitude = 2.0f;
-        waves[1].Magnitude = 1.0f;
+        waves[0].Origin = new Vector2(10, 10);
+        waves[0].Magnitude = 1.0f;
+		waves[0].Age = 0.0f;
+        //waves[1].Magnitude = 1.0f;
         material = gameObject.GetComponent<Renderer>().material;
     }
 
@@ -23,9 +24,9 @@ public class TestWaveDriver : MonoBehaviour
 
         for (int i = 0; i < WaveOriginData.MAX_WAVES; i++)
         {
-            waves[i].Age += Time.deltaTime;
-
-            data[i] = new Vector4(waves[i].Position.x, waves[i].Position.y, waves[i].Age, waves[i].Magnitude);
+            //waves[i].Age += Time.deltaTime;
+	        waves[i].Update();
+            data[i] = new Vector4(waves[i].Origin.x, waves[i].Origin.y, waves[i].Age, waves[i].Magnitude);
         }
 
         material.SetVectorArray("waves", data);

@@ -50,7 +50,7 @@
 				// Offset based on each incoming wave.
 				for (int i = 0; i < MAX_WAVES; i++)
 				{
-					v.vertex.y += cos(-_Time.y * WAVE_VELOCITY + length(v.vertex.xz - waves[i].xy)) * waves[i].w;
+					v.vertex.y += cos(-_Time.y * WAVE_VELOCITY + length(v.vertex.xz - waves[i].xy)) * (waves[i].w * waves[i].z);
 				}
 
 				o.vertex = UnityObjectToClipPos(v.vertex);
@@ -62,9 +62,16 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
-
+			
 				// Compute normal...
 				// Lighting...
+
+				//half3 worldNormal = UnityObjectToWorldNormal(v.normal);
+				//// dot product between normal and light direction for
+				//// standard diffuse (Lambert) lighting
+				//half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
+				//// factor in the light color
+				//o.diff = nl * _LightColor0;
 
 				return col;
 			}
