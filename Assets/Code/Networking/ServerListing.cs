@@ -7,7 +7,7 @@ namespace Assets.Code.Networking
 {
     class ServerListingSession
     {
-        public ServerDetails Server;
+        public HostData Server;
         public Action<FindServerResult> OnSelected;
     }
 
@@ -37,16 +37,17 @@ namespace Assets.Code.Networking
 
             _currentSession = session;
 
-            _nameText.text = _currentSession.Server.LobbyName;
-            _gameTypeText.text = _currentSession.Server.LobbyDescription;
-            _playerCountText.text = string.Format("? / {0}",
-                _currentSession.Server.MaxPlayers.ToString(CultureInfo.InvariantCulture));
+            _nameText.text = _currentSession.Server.gameName;
+            _gameTypeText.text = _currentSession.Server.comment;
+            _playerCountText.text = string.Format("{0} / {1}",
+                _currentSession.Server.connectedPlayers.ToString(CultureInfo.InvariantCulture),
+                _currentSession.Server.playerLimit.ToString(CultureInfo.InvariantCulture));
             _pingText.text = string.Format("{0} ms", "?");
         }
 
         private void OnSelectionButtonClicked()
         {
-            _currentSession.OnSelected(new FindServerResult {ServerName = _currentSession.Server.LobbyName, WasSuccessful = true});
+            _currentSession.OnSelected(new FindServerResult {Server = _currentSession.Server, WasSuccessful = true});
             Highlight();
         }
 

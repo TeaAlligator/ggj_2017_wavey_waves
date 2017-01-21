@@ -19,7 +19,9 @@ namespace Assets.Code.Menu
         [SerializeField] private Button _playerOptionsButton;
         [SerializeField] private Button _findButton;
         [SerializeField] private Button _exitButton;
-        
+
+        [SerializeField] private NetworkManager _network;
+
         private MainMenuSession _session;
 
         protected void Awake()
@@ -47,8 +49,7 @@ namespace Assets.Code.Menu
             {
                 OnConfirmed = result =>
                 {
-                    ShowCanvas();
-                    // TODO: START SERVER
+                    _network.StartServer(result.Details);
                 },
                 OnCancelled = () =>
                 {
@@ -66,7 +67,6 @@ namespace Assets.Code.Menu
                 OnConfirmed = result =>
                 {
                     ShowCanvas();
-                    // TODO: START SERVER
                 },
                 OnCancelled = () =>
                 {
@@ -83,8 +83,7 @@ namespace Assets.Code.Menu
             {
                 OnConfirmed = result =>
                 {
-                    ShowCanvas();
-                    // TODO: CONNECT
+                    _network.JoinServer(result.Server);
                 },
                 OnCancelled = () =>
                 {

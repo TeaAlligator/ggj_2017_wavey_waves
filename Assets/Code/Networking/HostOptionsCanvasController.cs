@@ -13,8 +13,15 @@ namespace Assets.Code.Networking
     
     struct HostOptionsResult
     {
-        public ServerDetails Details;
+        public ServerHostingDetails Details;
         public bool WasSuccessful;
+    }
+
+    struct ServerHostingDetails
+    {
+        public string LobbyName;
+        public string LobbyDescription;
+        public int MaxPlayers;
     }
 
     class HostOptionsCanvasController : MonoBehaviour
@@ -29,7 +36,7 @@ namespace Assets.Code.Networking
         [SerializeField] private Button _acceptButton;
         [SerializeField] private Button _cancelButton;
 
-        private ServerDetails _server;
+        private ServerHostingDetails _server;
         private HostOptionsSession _session;
 
         protected void Awake()
@@ -99,9 +106,9 @@ namespace Assets.Code.Networking
             _canvas.gameObject.SetActive(false);
         }
 
-        private static ServerDetails GenerateDefaultServer()
+        private static ServerHostingDetails GenerateDefaultServer()
         {
-            return new ServerDetails
+            return new ServerHostingDetails
             {
                 LobbyName = "wavey waves",
                 LobbyDescription = "the game you craves",

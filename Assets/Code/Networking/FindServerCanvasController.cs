@@ -13,7 +13,7 @@ namespace Assets.Code.Networking
 
     struct FindServerResult
     {
-        public string ServerName;
+        public HostData Server;
         public bool WasSuccessful;
     }
 
@@ -26,12 +26,15 @@ namespace Assets.Code.Networking
         [SerializeField] private Button _refreshButton;
         [SerializeField] private Button _cancelButton;
 
+        [SerializeField] private NetworkManager _network;
+
         [SerializeField] private ServerListing _listingPrefab;
 
         private List<ServerListing> _listings; 
 
         private FindServerResult _currentSelection;
         private FindServerSession _session;
+        private SubscribedEventToken _onNewHostList;
 
         public void Awake()
         {
@@ -41,13 +44,15 @@ namespace Assets.Code.Networking
             _refreshButton.onClick.AddListener(OnRefreshButtonClicked);
             _cancelButton.onClick.AddListener(OnCancelButtonClicked);
         }
-
+        
         public void StartSession(FindServerSession session)
         {
             if (_session != null) session.OnConfirmed(new FindServerResult { WasSuccessful = false });
 
             ShowCanvas();
             RefreshServers();
+
+            _onNewHostList = _network.OnNewHostList.Subscribe(OnNewHostList);
 
             _session = session;
         }
@@ -63,16 +68,10 @@ namespace Assets.Code.Networking
         private void RefreshServers()
         {
             // TODO: not dummy data
-            AddServerListing(new ServerDetails { LobbyName = "steve's server", LobbyDescription = "ww_void", MaxPlayers = 4 });
-            AddServerListing(new ServerDetails { LobbyName = "untitled", LobbyDescription = "ww_cauldron", MaxPlayers = 64 });
-            AddServerListing(new ServerDetails { LobbyName = "bahama bubble bash", LobbyDescription = "ww_bubbles", MaxPlayers = 16 });
-            AddServerListing(new ServerDetails { LobbyName = "test server", LobbyDescription = "ww_monet", MaxPlayers = 32 });
-            AddServerListing(new ServerDetails { LobbyName = "24/7 crash", LobbyDescription = "ww_crash", MaxPlayers = 8 });
-            AddServerListing(new ServerDetails { LobbyName = "dueltown", LobbyDescription = "ww_turgid", MaxPlayers = 2 });
-            AddServerListing(new ServerDetails { LobbyName = "call of cauldron", LobbyDescription = "ww_cauldron", MaxPlayers = 256 });
+            _network.RefreshHostList();
         }
 
-        private void AddServerListing(ServerDetails server)
+        private void AddServerListing(HostData server)
         {
             var listing = Instantiate(_listingPrefab).GetComponent<ServerListing>();
             listing.StartSession(new ServerListingSession {Server = server, OnSelected = OnServerSelected});
@@ -93,8 +92,7 @@ namespace Assets.Code.Networking
 
         private void OnConnectButtonClicked()
         {
-            ClearServerList();
-            HideCanvas();
+            CloseSession();
 
             _session.OnCancelled();
             _session = null;
@@ -108,11 +106,16 @@ namespace Assets.Code.Networking
 
         private void OnCancelButtonClicked()
         {
-            ClearServerList();
-            HideCanvas();
+            CloseSession();
 
             _session.OnCancelled();
             _session = null;
+        }
+
+        private void OnNewHostList(HostData[] datas)
+        {
+            foreach (var data in datas)
+                AddServerListing(data);
         }
 
         private void ShowCanvas()
@@ -123,6 +126,13 @@ namespace Assets.Code.Networking
         private void HideCanvas()
         {
             _canvas.gameObject.SetActive(false);
+        }
+
+        private void CloseSession()
+        {
+            _onNewHostList.Cancel();
+            ClearServerList();
+            HideCanvas();
         }
     }
 }
