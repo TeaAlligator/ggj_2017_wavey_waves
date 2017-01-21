@@ -5,7 +5,7 @@ namespace Assets.Code.Input
     class OrbitCameraController : MonoBehaviour
     {
         [SerializeField] private OrbitCameraDolly _dolly;
-        [SerializeField] private OrbitCameraFocus _focus;
+        [SerializeField] private OrbitCameraPivot _pivot;
 
         [SerializeField] private float _minZoom = 3f;
         [SerializeField] private float _maxZoom = 20f;
@@ -14,15 +14,19 @@ namespace Assets.Code.Input
 
         protected void Update()
         {
-            if (UnityEngine.Input.GetButton("rotate_camera")) HandleRotateCamera();
+            if (UnityEngine.Input.GetButtonDown("rotate_camera"))
+            {
+                _pivot.EnableRotation();
+                Cursor.visible = false;
+            }
+            if (UnityEngine.Input.GetButtonUp("rotate_camera"))
+            {
+                _pivot.DisableRotation();
+                Cursor.visible = true;
+            }
             if (UnityEngine.Input.mousePosition.x >= 0 && UnityEngine.Input.mousePosition.x <= Screen.width &&
                 UnityEngine.Input.mousePosition.y >= 0 && UnityEngine.Input.mousePosition.y <= Screen.height)
                 HandleZoomCamera();
-        }
-
-        private void HandleRotateCamera()
-        {
-            _focus.DoRotate();
         }
 
         private void HandleZoomCamera()
