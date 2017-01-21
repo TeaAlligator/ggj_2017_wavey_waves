@@ -5,23 +5,25 @@ using UnityEngine;
 
 public class WaveOriginData
 {
-	public static readonly uint WAVE_LIFETIME = 5;
-    public readonly static uint MAX_WAVES = 1;
+	public static readonly float WAVE_LIFETIME = 15.0f;
+    public readonly static uint MAX_WAVES = 4;
+    public readonly static float WAVE_VELOCITY = 4.0f;
+    public readonly static float WAVE_WIDTH = 3.0f;
 
-	public Vector3 Origin;
+    public Vector3 Origin;
 	public float Age;
-	public float Magnitude;
+    public float Magnitude;
 	public float PercentLife;
 
 	public void Init()
 	{
-		Age = 1;
+        Magnitude = 2.0f;
 	}
 
 	public void Update()
 	{
 		Age += Time.deltaTime;
-		PercentLife = Mathf.Abs(Age - WAVE_LIFETIME) / WAVE_LIFETIME;
+		PercentLife = 1.0f - (Age / WAVE_LIFETIME);
 	}
 
 	// source player for scoring

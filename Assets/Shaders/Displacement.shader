@@ -8,17 +8,20 @@
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
-		LOD 100
 
 		Pass
 		{
 			CGPROGRAM
-			#define MAX_WAVES 2
-			#define WAVE_VELOCITY 1.0f
+			#define MAX_LIFETIME 15.0f
+			#define MAX_WAVES 4
+			#define WAVE_VELOCITY 0.0f
+			#define WAVE_WIDTH 20.0f
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma target 5.0
 			
 			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
 			#include "UnityShaderVariables.cginc"
 
 			struct appdata
@@ -31,6 +34,7 @@
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
+				float4 worldPos : TEXCOORD1;
 			};
 
 			sampler2D _MainTex;
@@ -46,13 +50,20 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
-
 				// Offset based on each incoming wave.
 				for (int i = 0; i < MAX_WAVES; i++)
 				{
-					v.vertex.y += cos(-_Time.y * WAVE_VELOCITY + length(v.vertex.xz - waves[i].xy)) * (waves[i].w * waves[i].z);
+					float2 waveDirection = normalize(v.vertex.xz - waves[i].xy);
+					float2 wavePos = waves[i].xy + waveDirection * WAVE_VELOCITY * ((1.0f - waves[i].z) * MAX_LIFETIME);
+					float scale = smoothstep(WAVE_WIDTH, 0, abs(length(wavePos - v.vertex.xz)));
+
+					v.vertex.y += -cos(-_Time.y * 0.5f + length(v.vertex.xz - waves[i].xy)) * (waves[i].w * waves[i].z * scale);
 				}
 
+				v.vertex.y += cos(_Time.z + length(v.vertex.xz)) * 0.1f;
+				v.vertex.y += sin(_Time.z + length(v.vertex.xz)) * 0.1f;
+
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return o;
@@ -63,15 +74,20 @@
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
 			
-				// Compute normal...
-				// Lighting...
+				// Compute normal.
+				float3 worldNormal;
+				{
+					float3 dx = ddx(i.worldPos.xyz);
+					float3 dy = ddy(i.worldPos.xyz);
 
-				//half3 worldNormal = UnityObjectToWorldNormal(v.normal);
-				//// dot product between normal and light direction for
-				//// standard diffuse (Lambert) lighting
-				//half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
-				//// factor in the light color
-				//o.diff = nl * _LightColor0;
+					worldNormal = normalize(cross(dx, dy));
+				}
+
+				// Lighting.
+				{
+					col *= max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
+					col.rgb *= _LightColor0;
+				}
 
 				return col;
 			}

@@ -17,14 +17,12 @@ namespace Assets.Code
 		void Start ()
 		{
 			WaveOriginData test = new WaveOriginData();
-			test.Magnitude = 0.25f;
-			test.Origin = new Vector3(-5, 0, -5);
 			test.Init();
+			test.Origin = new Vector3(-5, 0, -5);
 			Waves.Add(test);
 			WaveOriginData test2 = new WaveOriginData();
 			test2.Init();
 			test2.Origin = new Vector3(10, 0, 10);
-			test2.Magnitude = 1.0f;
 			Waves.Add(test2);
 		}
 	
