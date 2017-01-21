@@ -17,10 +17,8 @@ namespace Assets.Code.Profile
         public bool WasSuccessful;
     }
 
-    class PlayerOptionsCanvasController : MonoBehaviour
+    class PlayerOptionsCanvasController : CanvasController
     {
-        [SerializeField] private Canvas _canvas;
-
         [SerializeField] private InputField _nameField;
         [SerializeField] private HorizontalLayoutGroup _colorSwatchLayout;
 
@@ -99,8 +97,7 @@ namespace Assets.Code.Profile
         
         private void OnAcceptClicked()
         {
-            ClearSwatches();
-            HideCanvas();
+            CloseSession();
 
             _session.OnConfirmed(new PlayerOptionsResult { Details = _player, WasSuccessful = true });
             _session = null;
@@ -108,21 +105,17 @@ namespace Assets.Code.Profile
 
         private void OnCancelClicked()
         {
-            ClearSwatches();
-            HideCanvas();
+            CloseSession();
 
             _session.OnCancelled();
             _session = null;
         }
 
-        private void ShowCanvas()
+        protected override void CloseSession()
         {
-            _canvas.gameObject.SetActive(true);
-        }
+            ClearSwatches();
 
-        private void HideCanvas()
-        {
-            _canvas.gameObject.SetActive(false);
+            base.CloseSession();
         }
     }
 }

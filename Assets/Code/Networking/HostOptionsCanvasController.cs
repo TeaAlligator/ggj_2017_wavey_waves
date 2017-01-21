@@ -24,10 +24,8 @@ namespace Assets.Code.Networking
         public int MaxPlayers;
     }
 
-    class HostOptionsCanvasController : MonoBehaviour
+    class HostOptionsCanvasController : CanvasController
     {
-        [SerializeField] private Canvas _canvas;
-
         [SerializeField] private InputField _nameField;
         [SerializeField] private InputField _descriptionField;
         [SerializeField] private Slider _maxPlayersSlider;
@@ -82,7 +80,7 @@ namespace Assets.Code.Networking
 
         private void OnAcceptClicked()
         {
-            HideCanvas();
+            CloseSession();
 
             _session.OnConfirmed(new HostOptionsResult { Details = _server, WasSuccessful = true });
             _session = null;
@@ -90,20 +88,10 @@ namespace Assets.Code.Networking
 
         private void OnCancelClicked()
         {
-            HideCanvas();
+            CloseSession();
 
             _session.OnCancelled();
             _session = null;
-        }
-
-        private void ShowCanvas()
-        {
-            _canvas.gameObject.SetActive(true);
-        }
-
-        private void HideCanvas()
-        {
-            _canvas.gameObject.SetActive(false);
         }
 
         private static ServerHostingDetails GenerateDefaultServer()

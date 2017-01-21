@@ -17,10 +17,8 @@ namespace Assets.Code.Networking
         public bool WasSuccessful;
     }
 
-    class FindServerCanvasController : MonoBehaviour
+    class FindServerCanvasController : CanvasController
     {
-        [SerializeField] private Canvas _canvas;
-        
         [SerializeField] private Transform _serverListTransform;
         [SerializeField] private Button _connectButton;
         [SerializeField] private Button _refreshButton;
@@ -67,7 +65,6 @@ namespace Assets.Code.Networking
 
         private void RefreshServers()
         {
-            // TODO: not dummy data
             _network.RefreshHostList();
         }
 
@@ -117,22 +114,13 @@ namespace Assets.Code.Networking
             foreach (var data in datas)
                 AddServerListing(data);
         }
-
-        private void ShowCanvas()
-        {
-            _canvas.gameObject.SetActive(true);
-        }
-
-        private void HideCanvas()
-        {
-            _canvas.gameObject.SetActive(false);
-        }
-
-        private void CloseSession()
+        
+        protected override void CloseSession()
         {
             _onNewHostList.Cancel();
             ClearServerList();
-            HideCanvas();
+
+            base.CloseSession();
         }
     }
 }

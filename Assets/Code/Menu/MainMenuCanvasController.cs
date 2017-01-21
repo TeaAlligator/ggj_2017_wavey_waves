@@ -7,10 +7,8 @@ namespace Assets.Code.Menu
 {
     class MainMenuSession {}
 
-    class MainMenuCanvasController : MonoBehaviour
+    class MainMenuCanvasController : CanvasController
     {
-        [SerializeField] private Canvas _canvas;
-
         [SerializeField] private HostOptionsCanvasController _hostCanvas;
         [SerializeField] private PlayerOptionsCanvasController _playerOptionsCanvas;
         [SerializeField] private FindServerCanvasController _findCanvas;
@@ -43,7 +41,7 @@ namespace Assets.Code.Menu
 
         private void OnHostClicked()
         {
-            HideCanvas();
+            CloseSession();
 
             _hostCanvas.StartSession(new HostOptionsSession
             {
@@ -60,7 +58,7 @@ namespace Assets.Code.Menu
 
         private void OnPlayerOptionsClicked()
         {
-            HideCanvas();
+            CloseSession();
 
             _playerOptionsCanvas.StartSession(new PlayerOptionsSession
             {
@@ -77,7 +75,7 @@ namespace Assets.Code.Menu
 
         private void OnFindClicked()
         {
-            HideCanvas();
+            CloseSession();
 
             _findCanvas.StartSession(new FindServerSession
             {
@@ -95,16 +93,6 @@ namespace Assets.Code.Menu
         private void OnExitClicked()
         {
             Application.Quit();
-        }
-
-        private void ShowCanvas()
-        {
-            _canvas.gameObject.SetActive(true);
-        }
-
-        private void HideCanvas()
-        {
-            _canvas.gameObject.SetActive(false);
         }
     }
 }
