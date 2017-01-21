@@ -1,49 +1,68 @@
 fileFormatVersion: 2
-guid: 906c1e7f7488e9f4595a3b7879292115
-timeCreated: 1485003830
+guid: 38c84fe15020ec743bf1caede0137ed3
+timeCreated: 1485027443
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: duck_body
-    100002: //RootNode
-    100004: Head_tf
-    100006: joint11
-    100008: joint12
-    100010: joint3
-    100012: joint4
-    100014: joint5
-    100016: joint8
-    100018: joint9
-    100020: L_Foot
-    100022: L_Wing
-    100024: LW_tf
-    100026: Neck
-    100028: R_Foot
-    100030: R_Wing
-    100032: Root
-    100034: RW_tf
-    400000: duck_body
-    400002: //RootNode
-    400004: Head_tf
-    400006: joint11
-    400008: joint12
-    400010: joint3
-    400012: joint4
-    400014: joint5
-    400016: joint8
-    400018: joint9
-    400020: L_Foot
-    400022: L_Wing
-    400024: LW_tf
-    400026: Neck
-    400028: R_Foot
-    400030: R_Wing
-    400032: Root
-    400034: RW_tf
-    4300000: duck_body
+    100000: group
+    100002: group1
+    100004: pasted__group
+    100006: pasted__pasted__pCone1
+    100008: pasted__pCone1
+    100010: pCone1
+    100012: pCone2
+    100014: pCylinder1
+    100016: pSphere1
+    100018: pSphere2
+    100020: pSphere3
+    100022: pSphere4
+    100024: pSphere5
+    100026: pSphere6
+    100028: pSphere7
+    100030: transform1
+    100032: transform10
+    100034: transform11
+    100036: transform2
+    100038: transform3
+    100040: transform4
+    100042: transform5
+    100044: transform6
+    100046: transform7
+    100048: transform8
+    100050: transform9
+    100052: //RootNode
+    400000: group
+    400002: group1
+    400004: pasted__group
+    400006: pasted__pasted__pCone1
+    400008: pasted__pCone1
+    400010: pCone1
+    400012: pCone2
+    400014: pCylinder1
+    400016: pSphere1
+    400018: pSphere2
+    400020: pSphere3
+    400022: pSphere4
+    400024: pSphere5
+    400026: pSphere6
+    400028: pSphere7
+    400030: transform1
+    400032: transform10
+    400034: transform11
+    400036: transform2
+    400038: transform3
+    400040: transform4
+    400042: transform5
+    400044: transform6
+    400046: transform7
+    400048: transform8
+    400050: transform9
+    400052: //RootNode
+    2300000: pCone2
+    3300000: pCone2
+    4300000: pCone2
     9500000: //RootNode
-    13700000: duck_body
   materials:
     importMaterials: 1
     materialName: 0
