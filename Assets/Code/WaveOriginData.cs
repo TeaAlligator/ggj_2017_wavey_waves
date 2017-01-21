@@ -5,9 +5,14 @@ using UnityEngine;
 
 public struct WaveOriginData
 {
-	public Vector2 Position;
-	public float Time;
+	public Vector3 Origin;
+	public float Age;
 	public float Magnitude;
+
+	public void Update()
+	{
+		//Age += Time.deltaTime;
+	}
 
 	// source player for scoring
 }

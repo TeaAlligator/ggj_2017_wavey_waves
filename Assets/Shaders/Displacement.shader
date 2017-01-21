@@ -54,7 +54,7 @@
 				//	v.vertex.y += cos(-_Time.y * 2.0f + length(v.vertex.xz * 20.0f)) * 0.02f;
 				//}
 
-				v.vertex.y -= 0.25* cos(2*(-_Time.y + length(v.vertex.xz + 5)));
+				v.vertex.y -= 0.25* cos(2*(-_Time.y + length(v.vertex.xz - 5) * .25));
 
 				// v.vertex.y -= 0.25*cos(2 * (-_Time.y + length(v.vertex.xz)));
 				// 

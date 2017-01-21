@@ -15,7 +15,11 @@ namespace Assets.Code
 		// Use this for initialization
 		void Start ()
 		{
-			var thing = _meshField.mesh.vertices;
+			WaveOriginData test = new WaveOriginData();
+			test.Magnitude = 0.2f;
+			test.Origin = new Vector3(5, 0, 5);
+			test.Age = 1;
+			Waves.Add(test);
 		}
 	
 		// Update is called once per frame
@@ -34,10 +38,11 @@ namespace Assets.Code
 			// track and remove aged waves
 			foreach (WaveOriginData wave in Waves)
 			{
-				if (Time.time - wave.Time >= WaveExpirationTime)
+				if (wave.Age >= WaveExpirationTime)
 				{
-					//RemoveWave(wave);
+					RemoveWave(wave);
 				}
+				wave.Update();
 			}
 		}
 
@@ -61,7 +66,10 @@ namespace Assets.Code
 		
 		private void RemoveWave(WaveOriginData wave)
 		{
+			Waves.Remove(wave);
 			// cull wave
+			int w;
+			w = 0;
 		}
 
 		public void AddWave(WaveOriginData wave)
