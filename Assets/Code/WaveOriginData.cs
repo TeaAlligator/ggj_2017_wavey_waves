@@ -8,4 +8,6 @@ public struct WaveOriginData
 	public Vector2 Position;
 	public float Time;
 	public float Magnitude;
+
+	// source player for scoring
 }
