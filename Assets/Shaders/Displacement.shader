@@ -54,7 +54,7 @@
 				//	v.vertex.y += cos(-_Time.y * 2.0f + length(v.vertex.xz * 20.0f)) * 0.02f;
 				//}
 
-				v.vertex.y += cos(-_Time.y * 2.0f + length(v.vertex.xz * 20.0f)) * 0.02f;
+				v.vertex.y += cos(-_Time.y + length(v.vertex.xz));
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
