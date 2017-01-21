@@ -1,4 +1,4 @@
-﻿Shader "Unlit/Displacement"
+﻿Shader "Water/Displacement"
 {
 	Properties
 	{
@@ -21,13 +21,6 @@
 			#include "UnityCG.cginc"
 			#include "UnityShaderVariables.cginc"
 
-			struct WaveOriginData
-			{
-				float2 position;
-				float age;
-				float magnitude;
-			};
-
 			struct appdata
 			{
 				float2 uv : TEXCOORD0;
@@ -42,30 +35,26 @@
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
-			uniform WaveOriginData waves[MAX_WAVES];
+
+			// wave
+			// x = position.x
+			// y = position.y
+			// z = age
+			// w = magnitude
+			uniform float4 waves[MAX_WAVES];
 
 			v2f vert (appdata v)
 			{
 				v2f o;
 
-				//for (int i = 0; i < MAX_WAVES; i++)
-				//{
-				//	float dist = waves;
-				//	v.vertex.y += cos(-_Time.y * 2.0f + length(v.vertex.xz * 20.0f)) * 0.02f;
-				//}
-
-				v.vertex.y -= 0.25* cos(2*(-_Time.y + length(v.vertex.xz + 5)));
-
-				// v.vertex.y -= 0.25*cos(2 * (-_Time.y + length(v.vertex.xz)));
-				// 
-				// v.vertex.y -= 0.25*cos(2 * (-_Time.y + length(v.vertex.xz + 10)));
-				// v.vertex.y -= 0.25*cos(2 * (-_Time.y + length(v.vertex.xz + 15)));
-				// 
-				// v.vertex.y -= 0.25*cos(2 * (-_Time.y + length(v.vertex.xz -15)));
+				// Offset based on each incoming wave.
+				for (int i = 0; i < MAX_WAVES; i++)
+				{
+					v.vertex.y += cos(-_Time.y * WAVE_VELOCITY + length(v.vertex.xz - waves[i].xy)) * waves[i].w;
+				}
 
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-
 				return o;
 			}
 
@@ -73,6 +62,9 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
+
+				// Compute normal...
+				// Lighting...
 
 				return col;
 			}

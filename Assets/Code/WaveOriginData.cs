@@ -5,8 +5,10 @@ using UnityEngine;
 
 public struct WaveOriginData
 {
-	public Vector2 Position;
-	public float Time;
+    public readonly static uint MAX_WAVES = 2;
+
+    public Vector2 Position;
+	public float Age;
 	public float Magnitude;
 
 	// source player for scoring
