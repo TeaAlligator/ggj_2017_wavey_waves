@@ -23,6 +23,11 @@ namespace Assets.Code.Player
 
         protected void Update()
         {
+            if(_netView.isMine) HandleInput();
+        }
+
+        private void HandleInput()
+        {
             transform.position = _groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition);
         }
     }
