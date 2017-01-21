@@ -21,20 +21,19 @@ namespace Assets.Code.Profile
     {
         [SerializeField] private InputField _nameField;
         [SerializeField] private HorizontalLayoutGroup _colorSwatchLayout;
-
         [SerializeField] private Button _acceptButton;
         [SerializeField] private Button _cancelButton;
 
         [SerializeField] private ColorSwatch _colorSwatchPrefab;
 
-        [SerializeField] private PlayerProfileManager _playerManager;
+        [AutoResolve] private PlayerProfileManager _playerManager;
 
         private PlayerDetails _player;
         private PlayerOptionsSession _session;
 
         private List<ColorSwatch> _swatches; 
 
-        protected void Awake()
+        protected override void Awake()
         {
             _swatches = new List<ColorSwatch>();
 
@@ -42,6 +41,8 @@ namespace Assets.Code.Profile
 
             _acceptButton.onClick.AddListener(OnAcceptClicked);
             _cancelButton.onClick.AddListener(OnCancelClicked);
+            
+            base.Awake();
         }
 
         public void StartSession(PlayerOptionsSession session)

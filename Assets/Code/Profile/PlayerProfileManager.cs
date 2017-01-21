@@ -10,7 +10,7 @@ namespace Assets.Code.Profile
         public Color Color;
     }
 
-    class PlayerProfileManager : MonoBehaviour
+    class PlayerProfileManager : MonoBehaviour, IResolveable
     {
         public PlayerDetails Details;
 

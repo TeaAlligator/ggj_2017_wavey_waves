@@ -37,7 +37,7 @@ namespace Assets.Code.Networking
         private ServerHostingDetails _server;
         private HostOptionsSession _session;
 
-        protected void Awake()
+        protected override void Awake()
         {
             _nameField.onValueChanged.AddListener(OnNameChanged);
             _descriptionField.onValueChanged.AddListener(OnDescriptionChanged);
@@ -45,6 +45,8 @@ namespace Assets.Code.Networking
             
             _acceptButton.onClick.AddListener(OnAcceptClicked);
             _cancelButton.onClick.AddListener(OnCancelClicked);
+            
+            base.Awake();
         }
 
         public void StartSession(HostOptionsSession session)

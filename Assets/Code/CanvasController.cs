@@ -6,6 +6,11 @@ namespace Assets.Code
     {
         [SerializeField] protected Canvas _canvas;
 
+        protected virtual void Awake()
+        {
+            Resolver.AutoResolve(this);
+        }
+
         protected virtual void ShowCanvas()
         {
             _canvas.gameObject.SetActive(true);
