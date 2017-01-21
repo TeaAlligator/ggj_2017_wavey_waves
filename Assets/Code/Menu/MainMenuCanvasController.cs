@@ -11,6 +11,7 @@ namespace Assets.Code.Menu
         [SerializeField] private Canvas _canvas;
 
         [SerializeField] private HostOptionsCanvasController _hostCanvas;
+        [SerializeField] private FindServerCanvasController _findCanvas;
 
         [SerializeField] private Button _hostButton;
         [SerializeField] private Button _findButton;
@@ -42,6 +43,7 @@ namespace Assets.Code.Menu
             {
                 OnConfirmed = result =>
                 {
+                    ShowCanvas();
                     // TODO: START SERVER
                 },
                 OnCancelled = () =>
@@ -53,7 +55,20 @@ namespace Assets.Code.Menu
 
         private void OnFindClicked()
         {
+            HideCanvas();
 
+            _findCanvas.StartSession(new FindServerSession
+            {
+                OnConfirmed = result =>
+                {
+                    ShowCanvas();
+                    // TODO: CONNECT
+                },
+                OnCancelled = () =>
+                {
+                    ShowCanvas();
+                }
+            });
         }
 
         private void OnExitClicked()

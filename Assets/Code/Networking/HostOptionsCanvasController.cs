@@ -50,6 +50,11 @@ namespace Assets.Code.Networking
 
             _session = session;
             _server = GenerateDefaultServer();
+
+            _nameField.text = _server.LobbyName;
+            _descriptionField.text = _server.LobbyDescription;
+            _maxPlayersSlider.value = _server.MaxPlayers;
+            _maxPlayersText.text = _server.MaxPlayers.ToString(CultureInfo.InvariantCulture);
         }
 
         private void OnNameChanged(string value)
