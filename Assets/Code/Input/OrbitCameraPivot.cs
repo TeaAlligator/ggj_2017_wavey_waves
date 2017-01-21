@@ -12,8 +12,6 @@ namespace Assets.Code.Input
         [SerializeField] private float _xRotationSensitivity = 0.5f;
         [SerializeField] private float _yRotationSensitivity = 0.5f;
 
-        private Vector2 _oldMousePosition = Vector2.zero;
-
         private const int SmoothingStrength = 8;
         private Vector2[] _smoothDeltas;
 
@@ -28,7 +26,6 @@ namespace Assets.Code.Input
         public void EnableRotation()
         {
             _isRotationEnabled = true;
-            _oldMousePosition = UnityEngine.Input.mousePosition;
 
             for (var i = 0; i < SmoothingStrength; i++)
             {
@@ -43,12 +40,12 @@ namespace Assets.Code.Input
         
         private void DoRotate()
         {
-            var mousePosition = (Vector2) UnityEngine.Input.mousePosition;
-
             // add new delta
             var newDeltas = new Vector2[SmoothingStrength];
             Array.Copy(_smoothDeltas, 0, newDeltas, 1, SmoothingStrength - 1);
-            newDeltas[0] = mousePosition - _oldMousePosition;
+            newDeltas[0] = new Vector2 (
+                UnityEngine.Input.GetAxis("Mouse X"),
+                UnityEngine.Input.GetAxis("Mouse Y"));
 
             // get our smoothed delta for proper value
             var smoothedDelta = Vector2.zero;
@@ -56,14 +53,12 @@ namespace Assets.Code.Input
                 smoothedDelta += newDeltas[i];
             smoothedDelta /= newDeltas.Length;
 
-            _xAxis += smoothedDelta.y * _xRotationSensitivity;
-            _yAxis += smoothedDelta.x * _yRotationSensitivity;
+            _xAxis += -smoothedDelta.y * _xRotationSensitivity;
+            _yAxis += -smoothedDelta.x * _yRotationSensitivity;
 
             _xAxis = Mathf.Clamp(_xAxis, _minXAxis, _maxXAxis);
 
             transform.localRotation = Quaternion.Euler(_xAxis, _yAxis, 0f);
-        
-            _oldMousePosition = mousePosition;
         }
     }
 }

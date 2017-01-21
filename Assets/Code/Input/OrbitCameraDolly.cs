@@ -12,6 +12,11 @@ namespace Assets.Code.Input
         private float _zoomLerpProgress = 0f;
         private float _zoomLerpTime = 1.0f;
 
+        protected void Awake()
+        {
+            _zoomLerpTarget = transform.localPosition.z;
+        }
+
         protected void Update()
         {
             if (_isLerpingZoom) HandleLerpZoom();
