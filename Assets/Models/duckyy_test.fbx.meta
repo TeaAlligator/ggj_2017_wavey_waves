@@ -1,51 +1,45 @@
 fileFormatVersion: 2
-guid: afe5ea89af4a7954793659f94932f75b
-timeCreated: 1484998047
+guid: c79016dfc093599489aab23684f710c4
+timeCreated: 1485003944
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: duck_body
-    100004: Head_tf
+    100002: joint1
+    100004: joint10
     100006: joint11
     100008: joint12
-    100010: joint3
-    100012: joint4
-    100014: joint5
-    100016: joint8
-    100018: joint9
-    100020: L_Foot
-    100022: L_Wing
-    100024: LW_tf
-    100026: Neck
-    100028: R_Foot
-    100030: R_Wing
-    100032: Root
-    100034: RW_tf
+    100010: joint13
+    100012: joint14
+    100014: joint2
+    100016: joint3
+    100018: joint4
+    100020: joint5
+    100022: joint6
+    100024: joint7
+    100026: joint8
+    100028: joint9
+    100030: pCube1
     400000: //RootNode
-    400002: duck_body
-    400004: Head_tf
+    400002: joint1
+    400004: joint10
     400006: joint11
     400008: joint12
-    400010: joint3
-    400012: joint4
-    400014: joint5
-    400016: joint8
-    400018: joint9
-    400020: L_Foot
-    400022: L_Wing
-    400024: LW_tf
-    400026: Neck
-    400028: R_Foot
-    400030: R_Wing
-    400032: Root
-    400034: RW_tf
-    2300000: duck_body
-    3300000: duck_body
-    4300000: duck_body
+    400010: joint13
+    400012: joint14
+    400014: joint2
+    400016: joint3
+    400018: joint4
+    400020: joint5
+    400022: joint6
+    400024: joint7
+    400026: joint8
+    400028: joint9
+    400030: pCube1
+    4300000: pCube1
     9500000: //RootNode
-    13700000: duck_body
+    13700000: pCube1
   materials:
     importMaterials: 1
     materialName: 0
@@ -60,7 +54,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -89,7 +83,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
@@ -105,7 +99,7 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2

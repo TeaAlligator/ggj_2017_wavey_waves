@@ -1,16 +1,49 @@
 fileFormatVersion: 2
-guid: e7550bce96419604db38b4d5f80eca52
-timeCreated: 1485002275
+guid: 906c1e7f7488e9f4595a3b7879292115
+timeCreated: 1485003830
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: pCube1
+    100000: duck_body
+    100002: //RootNode
+    100004: Head_tf
+    100006: joint11
+    100008: joint12
+    100010: joint3
+    100012: joint4
+    100014: joint5
+    100016: joint8
+    100018: joint9
+    100020: L_Foot
+    100022: L_Wing
+    100024: LW_tf
+    100026: Neck
+    100028: R_Foot
+    100030: R_Wing
+    100032: Root
+    100034: RW_tf
+    400000: duck_body
+    400002: //RootNode
+    400004: Head_tf
+    400006: joint11
+    400008: joint12
+    400010: joint3
+    400012: joint4
+    400014: joint5
+    400016: joint8
+    400018: joint9
+    400020: L_Foot
+    400022: L_Wing
+    400024: LW_tf
+    400026: Neck
+    400028: R_Foot
+    400030: R_Wing
+    400032: Root
+    400034: RW_tf
+    4300000: duck_body
     9500000: //RootNode
+    13700000: duck_body
   materials:
     importMaterials: 1
     materialName: 0
@@ -54,7 +87,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
@@ -73,7 +106,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
