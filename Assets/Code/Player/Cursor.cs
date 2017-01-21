@@ -1,6 +1,7 @@
 ﻿using Assets.Code.Input;
 using Assets.Code.Profile;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Code.Player
 {

@@ -26,7 +26,7 @@ namespace Assets.Code.Profile
 
         [SerializeField] private ColorSwatch _colorSwatchPrefab;
 
-        [AutoResolve] private PlayerProfileManager _playerManager;
+        [AutoResolve] private ProfileManager _profile;
 
         private PlayerDetails _player;
         private PlayerOptionsSession _session;
@@ -52,7 +52,7 @@ namespace Assets.Code.Profile
             ShowCanvas();
 
             _session = session;
-            _player = _playerManager.Details;
+            _player = _profile.Details;
 
             _nameField.text = _player.Name;
             AddSwatch(Color.red);

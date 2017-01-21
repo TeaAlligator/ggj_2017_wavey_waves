@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Assets.Code.Player
 {
-    class PlayManager : MonoBehaviour, IResolveable
+    class PlayerManager : MonoBehaviour, IResolveable
     {
         [SerializeField] private Cursor _cursorPrefab;
 
-        [AutoResolve] private PlayerProfileManager _profile;
+        [AutoResolve] private ProfileManager _profile;
         [AutoResolve] private GroundRaycaster _groundCast;
 
         private Cursor _cursor;
