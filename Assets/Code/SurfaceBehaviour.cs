@@ -1,4 +1,5 @@
-﻿using Boo.Lang;
+﻿using System;
+using Boo.Lang;
 using UnityEngine;
 
 namespace Assets.Code
@@ -7,9 +8,9 @@ namespace Assets.Code
 	{
 		[SerializeField] private MeshFilter _meshField;
 
-		public List<WaveOriginData> Waves;
+		public List<WaveOriginData> Waves = new List<WaveOriginData>();
 
-		private float WaveExpirationTime;
+		private float WaveExpirationTime = 5;
 
 		// Use this for initialization
 		void Start ()
@@ -35,7 +36,7 @@ namespace Assets.Code
 			{
 				if (Time.time - wave.Time >= WaveExpirationTime)
 				{
-					RemoveWave(wave);
+					//RemoveWave(wave);
 				}
 			}
 		}
@@ -67,5 +68,13 @@ namespace Assets.Code
 		{
 			Waves.Add(wave);
 		}
+
+		public float SmoothStep(float minEdge, float maxEdge, float x)
+		{
+			float positionInRange = Mathf.Clamp((x - minEdge)/(maxEdge - minEdge), 0.0f, 1.0f);
+
+			return positionInRange*positionInRange*(3 - 2*positionInRange);
+		}
+
 	}
 }
