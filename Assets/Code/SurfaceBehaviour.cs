@@ -34,7 +34,7 @@ namespace Assets.Code
 			// track and remove aged waves
 			foreach (WaveOriginData wave in Waves)
 			{
-				if (Time.time - wave.Time >= WaveExpirationTime)
+				if (Time.time - wave.Age >= WaveExpirationTime)
 				{
 					//RemoveWave(wave);
 				}
