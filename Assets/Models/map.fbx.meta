@@ -1,0 +1,192 @@
+fileFormatVersion: 2
+guid: 0e11a26550466ae48b84971615e5eb13
+timeCreated: 1485114112
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Calldumb
+    100002: Chain
+    100004: Chandalaier
+    100006: floor
+    100008: Hallway
+    100010: joint1
+    100012: joint10
+    100014: joint2
+    100016: joint3
+    100018: joint4
+    100020: joint5
+    100022: joint6
+    100024: joint7
+    100026: joint8
+    100028: joint9
+    100030: //RootNode
+    100032: RoofStruct
+    100034: RoofStruct1
+    100036: RoofStruct2
+    100038: RoofStruct3
+    100040: RoofStruct4
+    100042: RoofStruct5
+    100044: RoofStruct6
+    100046: Seat
+    100048: Tomb
+    100050: Tomb1
+    100052: wall
+    100054: wall1
+    100056: Water
+    100058: WindowWall
+    400000: Calldumb
+    400002: Chain
+    400004: Chandalaier
+    400006: floor
+    400008: Hallway
+    400010: joint1
+    400012: joint10
+    400014: joint2
+    400016: joint3
+    400018: joint4
+    400020: joint5
+    400022: joint6
+    400024: joint7
+    400026: joint8
+    400028: joint9
+    400030: //RootNode
+    400032: RoofStruct
+    400034: RoofStruct1
+    400036: RoofStruct2
+    400038: RoofStruct3
+    400040: RoofStruct4
+    400042: RoofStruct5
+    400044: RoofStruct6
+    400046: Seat
+    400048: Tomb
+    400050: Tomb1
+    400052: wall
+    400054: wall1
+    400056: Water
+    400058: WindowWall
+    2300000: Calldumb
+    2300002: Chandalaier
+    2300004: floor
+    2300006: Hallway
+    2300008: RoofStruct
+    2300010: RoofStruct1
+    2300012: RoofStruct2
+    2300014: RoofStruct3
+    2300016: RoofStruct4
+    2300018: RoofStruct5
+    2300020: RoofStruct6
+    2300022: Seat
+    2300024: Tomb
+    2300026: Tomb1
+    2300028: wall
+    2300030: wall1
+    2300032: Water
+    2300034: WindowWall
+    3300000: Calldumb
+    3300002: Chandalaier
+    3300004: floor
+    3300006: Hallway
+    3300008: RoofStruct
+    3300010: RoofStruct1
+    3300012: RoofStruct2
+    3300014: RoofStruct3
+    3300016: RoofStruct4
+    3300018: RoofStruct5
+    3300020: RoofStruct6
+    3300022: Seat
+    3300024: Tomb
+    3300026: Tomb1
+    3300028: wall
+    3300030: wall1
+    3300032: Water
+    3300034: WindowWall
+    4300000: Calldumb
+    4300002: Water
+    4300004: floor
+    4300006: wall
+    4300008: wall1
+    4300010: WindowWall
+    4300012: Hallway
+    4300014: RoofStruct
+    4300016: RoofStruct1
+    4300018: RoofStruct2
+    4300020: RoofStruct3
+    4300022: RoofStruct4
+    4300024: RoofStruct5
+    4300026: RoofStruct6
+    4300028: Chain
+    4300030: Seat
+    4300032: Tomb
+    4300034: Tomb1
+    4300036: Chandalaier
+    9500000: //RootNode
+    13700000: Chain
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
