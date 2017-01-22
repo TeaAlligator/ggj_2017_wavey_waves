@@ -37,9 +37,16 @@ namespace Assets.Code.Play
 
         private void OnExitButtonClicked()
         {
-            _session.OnExit();
-
+            var exitCall = _session.OnExit;
             CloseSession();
+
+            exitCall();
+        }
+
+        public override void CloseSession()
+        {
+            base.CloseSession();
+            _session = null;
         }
     }
 }

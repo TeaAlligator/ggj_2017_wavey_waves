@@ -100,6 +100,7 @@ namespace Assets.Code.Play
             if (_onHealthChanged != null) _onHealthChanged.Cancel();
 
             base.CloseSession();
+            _session = null;
         }
     }
 }

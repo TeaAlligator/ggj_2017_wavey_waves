@@ -57,8 +57,7 @@ namespace Assets.Code.Play
         public void CloseSession()
         {
             //NetworkServer.Destroy(_cursor.gameObject);
-            
-            _network.StopHost();
+            _session = null;
         }
     }
 }

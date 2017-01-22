@@ -117,6 +117,7 @@ namespace Assets.Code.Profile
             ClearSwatches();
 
             base.CloseSession();
+            _session = null;
         }
     }
 }

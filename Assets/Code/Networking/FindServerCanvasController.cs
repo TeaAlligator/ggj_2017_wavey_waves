@@ -29,7 +29,6 @@ namespace Assets.Code.Networking
         [SerializeField] private ServerListing _listingPrefab;
         
         [AutoResolve] private NetworkManager _network;
-        [AutoResolve] private NetworkMatchManager _match;
 
         private List<ServerListing> _listings; 
 
@@ -69,7 +68,7 @@ namespace Assets.Code.Networking
 
         private void RefreshServers()
         {
-            _match.Maker.ListMatches(0, 100, "", true, 0, 0, OnMatchList);
+            _network.matchMaker.ListMatches(0, 100, "", true, 0, 0, OnMatchList);
         }
 
         private void AddServerListing(MatchInfoSnapshot matchInfo)
@@ -93,10 +92,11 @@ namespace Assets.Code.Networking
 
         private void OnConnectButtonClicked()
         {
+            var call = _session.OnConfirmed;
+
             CloseSession();
 
-            _session.OnConfirmed(_currentSelection);
-            _session = null;
+            call(_currentSelection);
         }
 
         private void OnRefreshButtonClicked()
@@ -124,8 +124,8 @@ namespace Assets.Code.Networking
         public override void CloseSession()
         {
             ClearServerList();
-
             base.CloseSession();
+            _session = null;
         }
     }
 }

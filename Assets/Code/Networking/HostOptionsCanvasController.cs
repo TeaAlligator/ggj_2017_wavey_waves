@@ -82,10 +82,10 @@ namespace Assets.Code.Networking
 
         private void OnAcceptClicked()
         {
+            var onConfirmed = _session.OnConfirmed;
             CloseSession();
 
-            _session.OnConfirmed(new HostOptionsResult { Details = _server, WasSuccessful = true });
-            _session = null;
+            onConfirmed(new HostOptionsResult { Details = _server, WasSuccessful = true });
         }
 
         private void OnCancelClicked()
@@ -104,6 +104,12 @@ namespace Assets.Code.Networking
                 LobbyDescription = "the game you craves",
                 MaxPlayers = 4
             };
+        }
+
+        public override void CloseSession()
+        {
+            base.CloseSession();
+            _session = null;
         }
     }
 }

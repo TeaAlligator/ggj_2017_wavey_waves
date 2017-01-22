@@ -23,7 +23,6 @@ namespace Assets.Code.Menu
         [SerializeField] private Button _exitButton;
 
         [AutoResolve] private NetworkManager _network;
-        [AutoResolve] private NetworkMatchManager _match;
 
         private MainMenuSession _session;
 
@@ -35,6 +34,9 @@ namespace Assets.Code.Menu
             _exitButton.onClick.AddListener(OnExitClicked);
             
             base.Awake();
+            
+            // entry point
+            StartSession(new MainMenuSession());
         }
 
         public void StartSession(MainMenuSession session)
@@ -42,35 +44,8 @@ namespace Assets.Code.Menu
             if (_session != null) return;
 
             ShowCanvas();
-
+            
             _session = session;
-        }
-        
-        private void OnHostClicked()
-        {
-            CloseSession();
-
-            _hostCanvas.StartSession(new HostOptionsSession
-            {
-                OnConfirmed = result =>
-                {
-                    if (result.WasSuccessful)
-                    {
-                        _match.Maker.CreateMatch(result.Details.LobbyName, (uint) result.Details.MaxPlayers, 
-                            true, "", "", "", 0, 0, OnServerHosted);
-                        _gameSession.StartSession(new GameSession {OnExit = () =>
-                        {
-                            ShowCanvas();
-                        }});
-                    }
-                    else
-                        ShowCanvas();
-                },
-                OnCancelled = () =>
-                {
-                    ShowCanvas();
-                }
-            });
         }
 
         private void OnPlayerOptionsClicked()
@@ -90,24 +65,20 @@ namespace Assets.Code.Menu
             });
         }
 
-        private void OnFindClicked()
+        private void OnHostClicked()
         {
             CloseSession();
 
-            _findCanvas.StartSession(new FindServerSession
+            _hostCanvas.StartSession(new HostOptionsSession
             {
                 OnConfirmed = result =>
                 {
                     if (result.WasSuccessful)
                     {
-                        _match.Maker.JoinMatch(result.MatchInfo.networkId, "", "", "", 0, 0, OnMatchJoined);
-                        _gameSession.StartSession(new GameSession
-                        {
-                            OnExit = () =>
-                            {
-                                ShowCanvas();
-                            }
-                        });
+                        _network.StartMatchMaker();
+
+                        _network.matchMaker.CreateMatch(result.Details.LobbyName, (uint) result.Details.MaxPlayers, 
+                            true, "", "", "", 0, 0, OnServerHosted);
                     }
                     else
                         ShowCanvas();
@@ -119,14 +90,72 @@ namespace Assets.Code.Menu
             });
         }
 
+        private void OnFindClicked()
+        {
+            CloseSession();
+            _network.StartMatchMaker();
+
+            _findCanvas.StartSession(new FindServerSession
+            {
+                OnConfirmed = result =>
+                {
+                    if (result.WasSuccessful)
+                    {
+                        _network.matchMaker.JoinMatch(result.MatchInfo.networkId, "", "", "", 0, 0, OnMatchJoined);
+                    }
+                    else
+                    {
+                        _network.StopMatchMaker();
+                        ShowCanvas();
+                    }
+                },
+                OnCancelled = () =>
+                {
+                    _network.StopMatchMaker();
+                    ShowCanvas();
+                }
+            });
+        }
+
         private void OnServerHosted(bool wasSuccessful, string extendedInfo, MatchInfo match)
         {
-            _match.CurrentMatch = match;
+            Debug.Log(extendedInfo);
+
+            _network.StartHost();
+            _gameSession.StartSession(new GameSession
+            {
+                OnExit = () =>
+                {
+                    _network.StopHost();
+                    _network.StopMatchMaker();
+
+                    ShowCanvas();
+                }
+            });
         }
 
         private void OnMatchJoined(bool wasSuccessful, string extendedInfo, MatchInfo match)
         {
-            _match.CurrentMatch = match;
+            Debug.Log(extendedInfo);
+
+            _network.StartClient();
+            _gameSession.StartSession(new GameSession
+            {
+                OnExit = () =>
+                {
+                    _network.StopClient();
+                    _network.StopMatchMaker();
+
+                    ShowCanvas();
+                }
+            });
+        }
+
+        public override void CloseSession()
+        {
+            base.CloseSession();
+
+            _session = null;
         }
 
         private void OnExitClicked()
