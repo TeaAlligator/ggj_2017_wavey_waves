@@ -59,7 +59,8 @@ namespace Assets.Code.Player
 			transform.rotation = Quaternion.Euler(0,
 				AngleMath.SignedAngleBetween(
 					Vector3.forward,
-					_groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
+					_groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition) -
+                    transform.position,
 					Vector3.up), 0);
 
             if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))

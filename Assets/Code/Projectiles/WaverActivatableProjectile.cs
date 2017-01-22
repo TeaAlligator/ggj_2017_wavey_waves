@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Code.Projectiles
 {
@@ -9,7 +10,8 @@ namespace Assets.Code.Projectiles
 
         [AutoResolve] private WaveManager _waves;
 
-        protected override void Activate()
+        [Command]
+        protected override void CmdActivate()
         {
             _waves.Surface.AddWave(new WaveOriginData
             {
@@ -19,7 +21,7 @@ namespace Assets.Code.Projectiles
                 Magnitude = _magnitude
             });
 
-            base.Activate();
+            base.CmdActivate();
         }
     }
 }
