@@ -27,7 +27,7 @@
 			#pragma target 5.0
 			#define M_PI 3.14159f
 			//#define _Debug
-			//#define _USE_MASK
+			#define _USE_MASK
 			#define _SHADING
 
 			#include "UnityCG.cginc"
