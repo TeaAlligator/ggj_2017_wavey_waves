@@ -24,7 +24,7 @@ namespace Assets.Code
             foreach (var reseolvable in resolveables)
                 RegisterItem(reseolvable.GetType(), reseolvable);
             foreach (var manualContent in ManualContent)
-	
+                RegisterItem(manualContent.Content.GetType(), manualContent.Content);
 
             _isContentSorted = true;
         }
