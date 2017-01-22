@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Code.Extensions;
 using Assets.Code.Input;
 using Assets.Code.Play;
+using Assets.Code.Projectiles;
 using Assets.Code.Weapons;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -28,9 +30,13 @@ namespace Assets.Code.Player
         public List<Weapon> Weapons;
         public Weapon SelectedWeapon;
 
+        private Queue<ProjectileActivation> _activationQueue;
+
         protected void Awake()
         {
             Resolver.AutoResolve(this);
+
+            _activationQueue = new Queue<ProjectileActivation>();
         }
 
         public override void OnStartLocalPlayer()
@@ -65,6 +71,11 @@ namespace Assets.Code.Player
             }
         }
 
+        public void AddActivatable(ProjectileActivation act)
+        {
+            _activationQueue.Enqueue(act);
+        }
+
         [Command]
 	    private void CmdShoot()
 	    {
@@ -72,5 +83,21 @@ namespace Assets.Code.Player
 
             SelectedWeapon.Activate(this);
 	    }
+
+        [Command]
+        private void CmdActivate()
+        {
+            ProjectileActivation activation = null;
+
+            while (_activationQueue.Count > 0)
+            {
+                activation = _activationQueue.Dequeue();
+
+                if (activation != null) break;
+            }
+
+            if (activation == null) return;
+            activation.Activate();
+        }
     }
 }
