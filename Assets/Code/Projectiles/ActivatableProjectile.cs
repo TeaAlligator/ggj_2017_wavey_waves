@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Code.Player;
+using UnityEngine.Networking;
 
 namespace Assets.Code.Projectiles
 {
@@ -19,13 +20,14 @@ namespace Assets.Code.Projectiles
             {
                 Sender.AddActivatable(new ProjectileActivation
                 {
-                    Activate = Activate,
+                    Activate = CmdActivate,
                     Projectile = this
                 });
             }
         }
 
-        protected virtual void Activate()
+        [Command]
+        protected virtual void CmdActivate()
         {
             Destroy(gameObject);
         }
