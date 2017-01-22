@@ -55,15 +55,12 @@ namespace Assets.Code.Player
         }
 
         private void HandleInput()
-        {
-            if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButton("fire"))
-            {
-                transform.rotation = Quaternion.Euler(0,
-                    AngleMath.SignedAngleBetween(
-                        Vector3.forward,
-                        _groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
-                        Vector3.up), 0);
-            }
+		{
+			transform.rotation = Quaternion.Euler(0,
+				AngleMath.SignedAngleBetween(
+					Vector3.forward,
+					_groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
+					Vector3.up), 0);
 
             if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))
             {

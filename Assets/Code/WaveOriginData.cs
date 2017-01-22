@@ -19,6 +19,7 @@ public class WaveOriginData
 	{
 		Age = 0f;
         Magnitude = 1.0f;
+		PercentLife = 1.0f;
 	}
 
 	public void Update()

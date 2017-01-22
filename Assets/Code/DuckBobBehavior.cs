@@ -65,9 +65,9 @@ namespace Assets.Code
 
 			_velocity.y -= gravity;
 
-			Quaternion q = new Quaternion();
-			q.SetFromToRotation(Vector3.up, affectingNormal);
-			Quaternion.Lerp(_transform.rotation, q, 0.1f);
+			//Quaternion q = new Quaternion();
+			//q.SetFromToRotation(Vector3.up, affectingNormal);
+			//Quaternion.Lerp(_transform.rotation, q, 1.0f);
 
 			_transform.position += _velocity;
 
