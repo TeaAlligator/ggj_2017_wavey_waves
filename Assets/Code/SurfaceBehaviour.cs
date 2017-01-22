@@ -53,6 +53,9 @@ namespace Assets.Code
 					continue;
 				}
 
+				if (i >= WaveOriginData.MAX_WAVES)
+					break;
+
 				aliveCount++;
 				data[i] = new Vector4(Waves[i].Origin.x, Waves[i].Origin.z, Waves[i].PercentLife, Waves[i].Magnitude);
 			}
