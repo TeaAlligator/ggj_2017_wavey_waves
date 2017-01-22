@@ -61,19 +61,19 @@ namespace Assets.Code
 				_velocity += waveVelocityContribution;
 			}
 
+			//affectingNormal.x += 1.0f;
 			affectingNormal.Normalize();
+
+			//var source = _transform.localRotation * Vector3.up;
 
 			//_velocity.y -= gravity;
 
 			//Quaternion q = new Quaternion();
-
-			_transform.rotation.SetFromToRotation(_transform.rotation * Vector3.up, affectingNormal);
-
+			//_transform.localRotation = Quaternion.LookRotation(_transform.localRotation * Vector3.up, Vector3.Lerp(source, affectingNormal, 0.33f));
 			//q.SetFromToRotation(Vector3.up, affectingNormal);
 			//Quaternion.Lerp(_transform.rotation, q, 1.0f);
 
 			_transform.position += _velocity;
-
 			_transform.position = new Vector3(_transform.position.x, Mathf.Lerp(_transform.position.y, DuckY, 0.25f), _transform.position.z);
 
 			_runtime += Time.deltaTime;
