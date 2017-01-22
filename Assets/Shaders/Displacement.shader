@@ -19,7 +19,7 @@
 		{
 			CGPROGRAM
 			#define MAX_LIFETIME 15.0f
-			#define MAX_WAVES 1
+			#define MAX_WAVES 25
 			#define WAVE_VELOCITY 4.0f
 			#define WAVE_WIDTH 2.0f
 			#pragma vertex vert
