@@ -34,12 +34,14 @@ namespace Assets.Code.Audio
     {
         [SerializeField] private GameObject _audioSourcePrefab;
         [SerializeField] private Transform _sourceParent;
-        private readonly PooledAudioSource[] _sources;
+        private PooledAudioSource[] _sources;
 
         private const int NumberOfSources = 32;
 
         protected void Awake()
         {
+            _sources = new PooledAudioSource[NumberOfSources];
+
             for (var i = 0; i < NumberOfSources; i++)
             {
                 _sources[i] = Instantiate(_audioSourcePrefab).GetComponent<PooledAudioSource>();
