@@ -1,19 +1,25 @@
 fileFormatVersion: 2
-guid: 1345176d155eca343918c84dc0b7935e
-timeCreated: 1484973058
+guid: 113ca20b2df45164b9cc9ade4f25b815
+timeCreated: 1485114081
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: default
-    100002: //RootNode
-    400000: default
-    400002: //RootNode
-    2300000: default
-    3300000: default
-    4300000: default
+    100000: //RootNode
+    100002: pPlane1_MeshPart0
+    100004: pPlane1_MeshPart1
+    400000: //RootNode
+    400002: pPlane1_MeshPart0
+    400004: pPlane1_MeshPart1
+    2300000: pPlane1_MeshPart0
+    2300002: pPlane1_MeshPart1
+    3300000: pPlane1_MeshPart0
+    3300002: pPlane1_MeshPart1
+    4300000: pPlane1_MeshPart0
+    4300002: pPlane1_MeshPart1
+    9500000: //RootNode
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
@@ -33,13 +39,13 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 20
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importBlendShapes: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -53,9 +59,9 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
-    tangentImportMode: 3
-  importAnimation: 1
+    normalImportMode: 2
+    tangentImportMode: 2
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
