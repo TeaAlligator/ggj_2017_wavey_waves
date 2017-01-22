@@ -25,6 +25,8 @@ namespace Assets.Code
 		{
 			float DuckY = 0;
 
+			Vector3 affectingNormal = new Vector3();
+
 			float vDecay = 1.05f;
 			float gravity = 1;
 
@@ -44,22 +46,28 @@ namespace Assets.Code
 				DuckY += -Mathf.Cos(cosineInput) * appliedMagnitude * waveScale;
 
 				int normalLookupIndex = (int) Mathf.Floor((cosineInput - Mathf.Floor(cosineInput))*255);
+				Vector2 normal = _waves.Normals.Normals[normalLookupIndex];
 
 				Vector3 forceDirection = new Vector3();
-				forceDirection.x = waveToDuck.x;
-				forceDirection.y = _waves.Normals.Normals[normalLookupIndex].y;
-				forceDirection.z = waveToDuck.y;
+				forceDirection.x = waveToDuck.x * normal.x;
+				forceDirection.y = normal.y;
+				forceDirection.z = waveToDuck.y * normal.x;
 				forceDirection.Normalize();
 
-				Vector3 waveVelocityContribution = forceDirection * appliedMagnitude;
+				affectingNormal += forceDirection * appliedMagnitude;
 
-				// Testing
-				//waveVelocityContribution = new Vector3(0, forceDirection.y, 0);
+				Vector3 waveVelocityContribution = forceDirection * appliedMagnitude;
 
 				_velocity += waveVelocityContribution;
 			}
 
+			affectingNormal.Normalize();
+
 			_velocity.y -= gravity;
+
+			Quaternion q = new Quaternion();
+			q.SetFromToRotation(Vector3.up, affectingNormal);
+			Quaternion.Lerp(_transform.rotation, q, 0.1f);
 
 			_transform.position += _velocity;
 
