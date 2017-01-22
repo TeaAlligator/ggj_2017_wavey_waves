@@ -47,14 +47,14 @@ namespace Assets.Code.Input
 
         private void HandleZoomCamera()
         {
-            if (UnityEngine.Input.mouseScrollDelta.y > 0)
+            if (UnityEngine.Input.mouseScrollDelta.y > 0 || UnityEngine.Input.GetKey(KeyCode.UpArrow))
             {
                 var target = _dolly.MechanicalZoom - _zoomStrength;
                 target = Mathf.Clamp(target, _minZoom, _maxZoom);
 
                 _dolly.StartLerpZoom(target, _zoomLerpSpeed);
             }
-            if (UnityEngine.Input.mouseScrollDelta.y < 0)
+            if (UnityEngine.Input.mouseScrollDelta.y < 0 || UnityEngine.Input.GetKey(KeyCode.DownArrow))
             {
                 var target = _dolly.MechanicalZoom + _zoomStrength;
                 target = Mathf.Clamp(target, _minZoom, _maxZoom);
