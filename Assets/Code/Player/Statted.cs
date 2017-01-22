@@ -28,14 +28,12 @@ namespace Assets.Code.Player
         }
         public float HealthPercent { get; private set; }
 
-        public SubscribedEvent<HealthChangedData> OnHealthChanged;
+        public SubscribedEvent<HealthChangedData> OnHealthChanged = new SubscribedEvent<HealthChangedData>();
 
         protected void Awake()
         {
             _health = _maximumHealth;
             HealthPercent = 1.0f;
-
-            OnHealthChanged = new SubscribedEvent<HealthChangedData>();
         }
     }
 }
