@@ -1,6 +1,5 @@
 ﻿using System;
 using Assets.Code.Player;
-using UnityEngine.Networking;
 
 namespace Assets.Code.Projectiles
 {
@@ -28,7 +27,7 @@ namespace Assets.Code.Projectiles
         
         protected virtual void Activate()
         {
-            NetworkServer.Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }

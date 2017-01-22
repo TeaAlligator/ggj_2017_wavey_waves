@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
+﻿
+using UnityEngine;
 
 namespace Assets.Code.Projectiles
 {
@@ -8,24 +8,18 @@ namespace Assets.Code.Projectiles
         [SerializeField] private float _magnitude = 1f;
 
         [AutoResolve] private WaveManager _waves;
-        
+
         protected override void Activate()
         {
-            CmdWave();
-
-            base.Activate();
-        }
-
-        [Command]
-        private void CmdWave()
-        {
-            _waves.Surface.AddWave(new WaveOriginData
+            _waves.Surface.CmdAddWave(new WaveOriginData
             {
-                Origin = transform.position,
-                Age = 0f,
-                PercentLife = 1.0f,
+				Origin = transform.position,
+				Age = 0f,
+				PercentLife = 1.0f,
                 Magnitude = _magnitude
             });
+
+            base.Activate();
         }
     }
 }

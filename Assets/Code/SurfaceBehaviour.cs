@@ -1,10 +1,10 @@
-﻿using System;
-using Boo.Lang;
+﻿using Boo.Lang;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Code
 {
-	public class SurfaceBehaviour : MonoBehaviour
+	public class SurfaceBehaviour : NetworkBehaviour
 	{
 		[SerializeField]
 		private MeshFilter _meshField;
@@ -93,7 +93,8 @@ namespace Assets.Code
 			Waves.Remove(wave);
 		}
 
-		public void AddWave(WaveOriginData wave)
+        [Command]
+		public void CmdAddWave(WaveOriginData wave)
 		{
 			Waves.Add(wave);
 		}
