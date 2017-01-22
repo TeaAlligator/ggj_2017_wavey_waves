@@ -41,9 +41,9 @@ namespace Assets.Code
 
 				float waveScale = _waves.Surface.SmoothStep(WaveOriginData.WAVE_WIDTH, 0, Mathf.Abs((wavePosition - 
 					new Vector2(_transform.position.x, _transform.position.z)).magnitude));
-				float appliedMagnitude = 0.0075f * wave.Magnitude * wave.PercentLife * waveScale;
+				float appliedMagnitude = wave.Magnitude * wave.PercentLife * waveScale;
 
-				DuckY += -Mathf.Cos(cosineInput) * appliedMagnitude * waveScale;
+				DuckY += -Mathf.Cos(cosineInput) * appliedMagnitude;
 
 				int normalLookupIndex = (int) Mathf.Floor((cosineInput - Mathf.Floor(cosineInput))*255);
 				Vector2 normal = _waves.Normals.Normals[normalLookupIndex];
@@ -54,9 +54,9 @@ namespace Assets.Code
 				forceDirection.z = waveToDuck.y * Mathf.Abs(normal.x);
 				forceDirection.Normalize();
 
-				affectingNormal += forceDirection * appliedMagnitude;
+				affectingNormal += forceDirection * 0.0075f * appliedMagnitude;
 
-				Vector3 waveVelocityContribution = forceDirection * appliedMagnitude;
+				Vector3 waveVelocityContribution = forceDirection * 0.0075f * appliedMagnitude;
 
 				_velocity += waveVelocityContribution;
 			}
