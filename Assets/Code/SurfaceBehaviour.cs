@@ -59,7 +59,7 @@ namespace Assets.Code
 			// Fill remaining data with noop values
 			for (int i = aliveCount; i < WaveOriginData.MAX_WAVES; i++)
 			{
-				data[i] = new Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+				data[i] = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
 			}
 
 			// Update shader
