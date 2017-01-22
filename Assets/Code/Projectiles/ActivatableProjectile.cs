@@ -20,16 +20,15 @@ namespace Assets.Code.Projectiles
             {
                 Sender.AddActivatable(new ProjectileActivation
                 {
-                    Activate = CmdActivate,
+                    Activate = Activate,
                     Projectile = this
                 });
             }
         }
-
-        [Command]
-        protected virtual void CmdActivate()
+        
+        protected virtual void Activate()
         {
-            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
     }
 }
