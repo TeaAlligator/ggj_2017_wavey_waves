@@ -27,6 +27,7 @@
 			#pragma target 5.0
 			#define M_PI 3.14159f
 			//#define _Debug
+			//#define _USE_MASK
 			#define _SHADING
 
 			#include "UnityCG.cginc"
@@ -64,9 +65,8 @@
 			{
 				v2f o;
 				
-				float scale1 = 1.0f;
-				#if !defined(SHADER_API_OPENGL)
-					scale1 = tex2Dlod(_Mask, float4(v.uv, 0, 0)).r;
+				#ifdef _USE_MASK
+					float maskScale = tex2Dlod(_Mask, float4(v.uv, 0, 0)).r;
 				#endif
 
 				// Offset based on each incoming wave.
@@ -79,7 +79,11 @@
 					//v.vertex.y += (scale * 0.1f) *
 					//	(_HeightInit * (exp(-_Time.y * 0.5f * _Decay) * cos((2 * M_PI) * -_Speed * _Time.y * 0.5f + length((v.vertex.xz - waves[0].xy - float2(0.1, 0.1)) * 30.0f))));
 
-					v.vertex.y += -cos(-_Time.y * 0.5f + length(v.vertex.xz - waves[i].xy)) * (waves[i].w * waves[i].z * scale);
+					v.vertex.y +=
+					#ifdef _USE_MASK
+						maskScale *
+					#endif
+						-cos(-_Time.y * 0.5f + length(v.vertex.xz - waves[i].xy)) * (waves[i].w * waves[i].z * scale);
 				}
 
 				// Global motion
@@ -97,7 +101,7 @@
 			float4 frag (v2f i) : SV_Target
 			{
 				// sample the texture
-				float4 col = tex2D(_MainTex, i.uv).rgba;
+				float4 col = tex2D(_MainTex, i.uv);
 			
 				// Compute normal.
 				float3 dx = ddx(i.worldPos.xyz);

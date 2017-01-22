@@ -6,15 +6,17 @@ namespace Assets.Code
 {
 	public class SurfaceBehaviour : MonoBehaviour
 	{
-		[SerializeField] private MeshFilter _meshField;
-		[SerializeField] private Renderer _renderer;
+		[SerializeField]
+		private MeshFilter _meshField;
+		[SerializeField]
+		private Renderer _renderer;
 
 		public List<WaveOriginData> Waves = new List<WaveOriginData>();
 
 		private float WaveExpirationTime = 5;
 
 		// Use this for initialization
-		void Start ()
+		void Start()
 		{
 			WaveOriginData test = new WaveOriginData();
 			test.Init();
@@ -25,11 +27,11 @@ namespace Assets.Code
 			test2.Origin = new Vector3(10, 0, 10);
 			//Waves.Add(test2);
 		}
-	
+
 		// Update is called once per frame
-		void Update ()
+		void Update()
 		{
-			if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Space))
+			if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
 			{
 				WaveOriginData t = new WaveOriginData();
 				t.Init();
@@ -37,46 +39,39 @@ namespace Assets.Code
 				Waves.Add(t);
 			}
 
-			if (Waves.Count > 0)
+			// Update and kill dead waves
+			Vector4[] data = new Vector4[WaveOriginData.MAX_WAVES];
+			int aliveCount = 0;
+			for (int i = 0; i < Waves.Count; i++)
 			{
-				List<int> deadWaves = new List<int>();
-				Vector4[] data = new Vector4[Waves.Count];
+				Waves[i].Update();
 
-				for (int i = 0; i < Waves.Count; i++)
+				if (Waves[i].Age >= WaveOriginData.WAVE_LIFETIME)
 				{
-					Waves[i].Update();
-					
-					data[i] = new Vector4(Waves[i].Origin.x, Waves[i].Origin.z, Waves[i].PercentLife, Waves[i].Magnitude);
-
-					if (Waves[i].Age >= WaveOriginData.WAVE_LIFETIME)
-					{
-						deadWaves.Add(i);
-					}
+					Waves.Remove(Waves[i--]);
+					continue;
 				}
 
-				_renderer.material.SetVectorArray("waves", data);
-
-				for (int i = deadWaves.Count - 1; i >= 0; i--)
-				{
-					Waves.Remove(Waves[deadWaves[i]]);
-				}
+				aliveCount++;
+				data[i] = new Vector4(Waves[i].Origin.x, Waves[i].Origin.z, Waves[i].PercentLife, Waves[i].Magnitude);
 			}
-			else
+
+			// Fill remaining data with noop values
+			for (int i = aliveCount; i < WaveOriginData.MAX_WAVES; i++)
 			{
-				// or switch shader
-				Vector4[] data = new Vector4[1];
-				data[0] = new Vector4(0,0,1,0);
-				_renderer.material.SetVectorArray("waves", data);
+				data[i] = new Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 			}
 
+			// Update shader
+			_renderer.material.SetVectorArray("waves", data);
 		}
 
 		public List<Vector3> GetClosestVerts(int numVertices, Vector3 target)
 		{
 			// query surface for closest vertices
 			// store vertices as indexed 2d arrays perhaps for speed
-			
-			return null;  
+
+			return null;
 		}
 
 		public Vector3 GetAvgNormal(List<Vector3> Vertices)
@@ -88,7 +83,7 @@ namespace Assets.Code
 
 			return avgNormal;
 		}
-		
+
 		private void RemoveWave(WaveOriginData wave)
 		{
 			Waves.Remove(wave);
@@ -101,9 +96,9 @@ namespace Assets.Code
 
 		public float SmoothStep(float minEdge, float maxEdge, float x)
 		{
-			float positionInRange = Mathf.Clamp((x - minEdge)/(maxEdge - minEdge), 0.0f, 1.0f);
+			float positionInRange = Mathf.Clamp((x - minEdge) / (maxEdge - minEdge), 0.0f, 1.0f);
 
-			return positionInRange*positionInRange*(3f - 2f*positionInRange);
+			return positionInRange * positionInRange * (3f - 2f * positionInRange);
 		}
 
 	}
