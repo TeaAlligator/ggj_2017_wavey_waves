@@ -95,7 +95,7 @@
 				//v.vertex.y += scale1 * sin(-_Time.z + length(v.vertex.xz + (600, 0))) * 0.1f;
 				
 				o.vertex = mul(UNITY_MATRIX_VP, o.worldPos);
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex) + float2(_SinTime.w, _CosTime.w) * 0.01f;
+				o.uv = TRANSFORM_TEX(v.uv, _MainTex) + float2(_SinTime.w, _CosTime.w) * 0.002f;
 				return o;
 			}
 
