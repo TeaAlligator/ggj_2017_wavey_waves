@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Code.Extensions;
 using Assets.Code.Input;
 using Assets.Code.Play;
 using Assets.Code.Weapons;
@@ -18,34 +19,11 @@ namespace Assets.Code.Player
     class RubberDucky : NetworkBehaviour
     {
         [SerializeField] private NetworkIdentity _netId;
-        [SerializeField] private readonly float _maximumHealth = 100f;
+        [SerializeField] public Statted Stats;
 
         [AutoResolve] private GroundRaycaster _groundCast;
         [AutoResolve] private ButtonKnower _buttonKnower;
         [AutoResolve] private DuckInspectCanvasController _inspectDuck;
-
-        private float _health;
-        public float Health
-        {
-            get { return _health; }
-            set
-            {
-                var oldValue = _health;
-
-                _health = value;
-                HealthPercent = value / _maximumHealth;
-
-                OnHealthChanged.Fire(new HealthChangedData
-                {
-                    OldHealth = oldValue,
-                    NewHealth = value,
-                    DeltaHealth = value - oldValue,
-                    Percent = HealthPercent
-                });
-            }
-        }
-        public float HealthPercent { get; private set; }
-        public SubscribedEvent<HealthChangedData> OnHealthChanged;
         
         public List<Weapon> Weapons;
         public Weapon SelectedWeapon;
@@ -53,11 +31,6 @@ namespace Assets.Code.Player
         protected void Awake()
         {
             Resolver.AutoResolve(this);
-
-            _health = _maximumHealth;
-            HealthPercent = 1.0f;
-
-            OnHealthChanged = new SubscribedEvent<HealthChangedData>();
         }
 
         public override void OnStartLocalPlayer()
@@ -79,9 +52,11 @@ namespace Assets.Code.Player
         {
             if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButton("fire"))
             {
-                transform.rotation.SetLookRotation(transform.position -
-                    _groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
-                    Vector3.up);
+                transform.rotation = Quaternion.Euler(0,
+                    AngleMath.SignedAngleBetween(
+                        Vector3.forward,
+                        _groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
+                        Vector3.up), 0);
             }
 
             if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))

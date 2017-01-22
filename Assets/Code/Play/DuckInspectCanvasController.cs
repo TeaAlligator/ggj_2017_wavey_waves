@@ -50,10 +50,10 @@ namespace Assets.Code.Play
             _session = session;
             ShowCanvas();
 
-            _onHealthChanged = _session.Subject.OnHealthChanged.Subscribe(OnSubjectHealthChanged);
+            _onHealthChanged = _session.Subject.Stats.OnHealthChanged.Subscribe(OnSubjectHealthChanged);
 
-            _healthLerpSlider.value = _session.Subject.HealthPercent;
-            _healthMechanicalSlider.value = _session.Subject.HealthPercent;
+            _healthLerpSlider.value = _session.Subject.Stats.HealthPercent;
+            _healthMechanicalSlider.value = _session.Subject.Stats.HealthPercent;
             foreach(var projectile in _session.Subject.Weapons)
                 AddProjectileButton(projectile);
 

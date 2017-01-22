@@ -19,11 +19,8 @@ namespace Assets.Code.Weapons
 
         private void Shoot()
         {
-            var fab = Instantiate(_energyBoltPrefab, transform.position, transform.rotation);
-            var rigidbody = fab.GetComponent<Rigidbody>();
-
-            rigidbody.velocity = transform.forward * _speed;
-
+            var fab = Instantiate(_energyBoltPrefab, transform.position + transform.forward, transform.rotation);
+            
             NetworkServer.Spawn(fab);
         }
     }
