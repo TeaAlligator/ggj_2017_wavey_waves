@@ -78,7 +78,7 @@ namespace Assets.Code.Menu
                         _network.StartMatchMaker();
 
                         _network.matchMaker.CreateMatch(result.Details.LobbyName, (uint) result.Details.MaxPlayers, 
-                            true, "", "", "", 0, 0, OnServerHosted);
+                            true, "", "", "", 0, 0, _network.OnMatchCreate);
                     }
                     else
                         ShowCanvas();
@@ -101,7 +101,7 @@ namespace Assets.Code.Menu
                 {
                     if (result.WasSuccessful)
                     {
-                        _network.matchMaker.JoinMatch(result.MatchInfo.networkId, "", "", "", 0, 0, OnMatchJoined);
+                        _network.matchMaker.JoinMatch(result.MatchInfo.networkId, "", "", "", 0, 0, _network.OnMatchJoined);
                     }
                     else
                     {
@@ -117,44 +117,43 @@ namespace Assets.Code.Menu
             });
         }
 
-        private void OnServerHosted(bool wasSuccessful, string extendedInfo, MatchInfo match)
-        {
-            Debug.Log(extendedInfo);
+        //private void OnServerHosted(bool wasSuccessful, string extendedInfo, MatchInfo match)
+        //{
+        //    Debug.Log(extendedInfo);
 
-            _network.StartHost();
-            _gameSession.StartSession(new GameSession
-            {
-                OnExit = () =>
-                {
-                    _network.StopHost();
-                    _network.StopMatchMaker();
+        //    _network.StartHost();
+        //    _gameSession.StartSession(new GameSession
+        //    {
+        //        OnExit = () =>
+        //        {
+        //            _network.StopHost();
+        //            _network.StopMatchMaker();
 
-                    ShowCanvas();
-                }
-            });
-        }
+        //            ShowCanvas();
+        //        }
+        //    });
+        //}
 
-        private void OnMatchJoined(bool wasSuccessful, string extendedInfo, MatchInfo match)
-        {
-            Debug.Log(extendedInfo);
+        //private void OnMatchJoined(bool wasSuccessful, string extendedInfo, MatchInfo match)
+        //{
+        //    Debug.Log(extendedInfo);
+            
+        //    ClientScene.Ready(_network.client.connection);
+        //    if (ClientScene.localPlayers.Count == 0)
+        //        ClientScene.AddPlayer(0);
 
+        //    _network.StartClient();
+        //    _gameSession.StartSession(new GameSession
+        //    {
+        //        OnExit = () =>
+        //        {
+        //            _network.StopClient();
+        //            _network.StopMatchMaker();
 
-            ClientScene.Ready(_network.client.connection);
-            if (ClientScene.localPlayers.Count == 0)
-                ClientScene.AddPlayer(0);
-
-            _network.StartClient();
-            _gameSession.StartSession(new GameSession
-            {
-                OnExit = () =>
-                {
-                    _network.StopClient();
-                    _network.StopMatchMaker();
-
-                    ShowCanvas();
-                }
-            });
-        }
+        //            ShowCanvas();
+        //        }
+        //    });
+        //}
 
         public override void CloseSession()
         {
