@@ -23,27 +23,31 @@ namespace Assets.Code
 		void Update ()
 		{
 			float DuckY = 0;
-			//_velocity.x = 0;
-			//_velocity.y = 0;
-			//_velocity.z = 0;
+
+			float vDecay = 3;
+			float gravity = 1;
+
+			_velocity /= vDecay;
+
 			foreach (WaveOriginData wave in _surface.Waves)
 			{
-				Vector3 waveToDuck = _transform.position - wave.Origin;
-				waveToDuck.Normalize();
-				Vector3 wavePosition = wave.Origin + waveToDuck * WaveOriginData.WAVE_VELOCITY * wave.Age;
-				float cosineInput = (-_runtime * 0.5f + (waveToDuck).magnitude);
-				float waveScale = _surface.SmoothStep(0, WaveOriginData.WAVE_WIDTH, Mathf.Abs((wavePosition - _transform.position).magnitude));
-				float appliedMagnitude = wave.Magnitude * wave.PercentLife;// * waveScale;
-				DuckY += -Mathf.Cos(cosineInput);// * appliedMagnitude// * waveScale;
+				Vector2 waveToDuck = new Vector2(_transform.position.x, _transform.position.z) - new Vector2(wave.Origin.x, wave.Origin.z);
+				Vector2 wavePosition = new Vector2(wave.Origin.x, wave.Origin.z) + waveToDuck.normalized * WaveOriginData.WAVE_VELOCITY * wave.Age;
 
-				// Gets 0-1 representation of cosine input. works because waves recur
-				// transforms 0-1 into 0-255 for normal lookup
+				float cosineInput = (-_runtime * 0.5f + (waveToDuck).magnitude);
+
+				float waveScale = _surface.SmoothStep(WaveOriginData.WAVE_WIDTH, 0, Mathf.Abs((wavePosition - 
+					new Vector2(_transform.position.x, _transform.position.z)).magnitude));
+				float appliedMagnitude = wave.Magnitude * wave.PercentLife * waveScale;
+
+				DuckY += -Mathf.Cos(cosineInput) * appliedMagnitude * waveScale;
+
 				int normalLookupIndex = (int) Mathf.Floor((cosineInput - Mathf.Floor(cosineInput))*255);
 
 				Vector3 forceDirection = new Vector3();
 				forceDirection.x = waveToDuck.x;
 				forceDirection.y = _manager.Normals.Normals[normalLookupIndex].y;
-				forceDirection.z = waveToDuck.z;
+				forceDirection.z = waveToDuck.y;
 				forceDirection.Normalize();
 
 				Vector3 waveVelocityContribution = forceDirection * appliedMagnitude;
@@ -51,14 +55,14 @@ namespace Assets.Code
 				// Testing
 				waveVelocityContribution = new Vector3(0, forceDirection.y, 0);
 
-				//_velocity += waveVelocityContribution;
+				_velocity += waveVelocityContribution;
 			}
 
-			float vDecay = 3;
+			_velocity.y -= gravity;
 
 			_transform.position += _velocity;
 
-			_velocity /= vDecay;
+			_transform.position = new Vector3(_transform.position.x, DuckY, _transform.position.z);
 
 			_runtime += Time.deltaTime;
 		}

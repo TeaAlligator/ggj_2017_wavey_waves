@@ -21,7 +21,7 @@
 			#define MAX_LIFETIME 15.0f
 			#define MAX_WAVES 1
 			#define WAVE_VELOCITY 4.0f
-			#define WAVE_WIDTH 20.0f
+			#define WAVE_WIDTH 2.0f
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma target 5.0
@@ -85,7 +85,8 @@
 				// Global motion
 				//v.vertex.y += scale1 * cos(_Time.z + length(v.vertex.xz)) * 0.1f;
 				//v.vertex.y += scale1 * sin(_Time.z + length(v.vertex.xz)) * 0.1f;
-				//v.vertex.y += scale1 * sin(-_Time.z + length(v.vertex.xz - (0,600))) * 0.05f;
+				//v.vertex.y += scale1 * sin(-_Time.z * 0.5f + length(v.vertex.xz - (0, 600))) * 0.1f;
+				//v.vertex.y += scale1 * sin(-_Time.z + length(v.vertex.xz + (600, 0))) * 0.1f;
 
 				o.worldPos = mul(v.vertex, unity_ObjectToWorld);
 				o.vertex = UnityObjectToClipPos(v.vertex);

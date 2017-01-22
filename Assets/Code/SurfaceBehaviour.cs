@@ -95,7 +95,7 @@ namespace Assets.Code
 		{
 			float positionInRange = Mathf.Clamp((x - minEdge)/(maxEdge - minEdge), 0.0f, 1.0f);
 
-			return positionInRange*positionInRange*(3 - 2*positionInRange);
+			return positionInRange*positionInRange*(3f - 2f*positionInRange);
 		}
 
 	}
