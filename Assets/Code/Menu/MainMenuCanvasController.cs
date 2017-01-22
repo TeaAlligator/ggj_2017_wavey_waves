@@ -138,10 +138,12 @@ namespace Assets.Code.Menu
         {
             Debug.Log(extendedInfo);
 
-            _network.StartClient();
+
             ClientScene.Ready(_network.client.connection);
             if (ClientScene.localPlayers.Count == 0)
                 ClientScene.AddPlayer(0);
+
+            _network.StartClient();
             _gameSession.StartSession(new GameSession
             {
                 OnExit = () =>
