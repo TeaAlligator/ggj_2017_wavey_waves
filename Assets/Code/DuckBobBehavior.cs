@@ -53,7 +53,7 @@ namespace Assets.Code
 				Vector3 waveVelocityContribution = forceDirection * appliedMagnitude;
 
 				// Testing
-				waveVelocityContribution = new Vector3(0, forceDirection.y, 0);
+				//waveVelocityContribution = new Vector3(0, forceDirection.y, 0);
 
 				_velocity += waveVelocityContribution;
 			}
