@@ -1,7 +1,6 @@
 ﻿using System;
 using Assets.Code.Player;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Assets.Code.Projectiles
 {
@@ -10,26 +9,27 @@ namespace Assets.Code.Projectiles
         public ActivatableProjectile Projectile;
         public Action Activate;
     }
-
-    class ActivatableProjectile : NetworkBehaviour
+    
+    class ActivatableProjectile : Projectile
     {
-        public RubberDucky Sender;
-
-        [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private float _speed;
-
-        protected void Awake()
+        public override void RegisterWithSender(RubberDucky sender)
         {
-            _rigidbody.velocity = transform.forward * _speed;
+            base.RegisterWithSender(sender);
 
             if (Sender != null)
+            {
                 Sender.AddActivatable(new ProjectileActivation
                 {
                     Activate = Activate,
                     Projectile = this
                 });
+            }
         }
 
-        protected virtual void Activate() {}
+        protected virtual void Activate()
+        {
+            Debug.Log("ACTIVATION");
+            Destroy(gameObject);
+        }
     }
 }

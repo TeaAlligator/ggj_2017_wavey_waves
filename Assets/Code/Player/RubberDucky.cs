@@ -69,6 +69,11 @@ namespace Assets.Code.Player
             {
                 CmdShoot();
             }
+
+            if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("activate"))
+            {
+                CmdActivate();
+            }
         }
 
         public void AddActivatable(ProjectileActivation act)

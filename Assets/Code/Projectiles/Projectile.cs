@@ -2,26 +2,25 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Assets.Code
+namespace Assets.Code.Projectiles
 {
     class Projectile : NetworkBehaviour
     {
-        [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private float _speed;
-        [SerializeField] private float _damage;
+        public RubberDucky Sender;
 
-        protected void Awake()
+        [SerializeField] protected Rigidbody _rigidbody;
+        [SerializeField] protected float _speed;
+        
+        protected virtual void Awake()
         {
             _rigidbody.velocity = transform.forward * _speed;
+
+            Resolver.AutoResolve(this);
         }
 
-        protected void OnTriggerEnter(Collider other)
+        public virtual void RegisterWithSender(RubberDucky sender)
         {
-            var stats = other.GetComponent<Statted>();
-
-            stats.Health -= _damage;
-
-            NetworkServer.Destroy(gameObject);
+            Sender = sender;
         }
     }
 }

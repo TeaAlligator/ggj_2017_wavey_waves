@@ -29,13 +29,13 @@ namespace Assets.Code
 		// Update is called once per frame
 		void Update ()
 		{
-			if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Space))
-			{
-				WaveOriginData t = new WaveOriginData();
-				t.Init();
-				t.Origin = new Vector3(UnityEngine.Random.value * 20 - 10, 0, UnityEngine.Random.value * 20 - 10);
-				Waves.Add(t);
-			}
+			//if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Space))
+			//{
+			//	WaveOriginData t = new WaveOriginData();
+			//	t.Init();
+			//	t.Origin = new Vector3(UnityEngine.Random.value * 20 - 10, 0, UnityEngine.Random.value * 20 - 10);
+			//	Waves.Add(t);
+			//}
 
 			if (Waves.Count > 0)
 			{
