@@ -115,6 +115,8 @@ namespace Assets.Code.Networking
 
         private void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> datas)
         {
+            if (!success) Debug.Log(extendedInfo);
+
             foreach (var data in datas)
                 AddServerListing(data);
         }
