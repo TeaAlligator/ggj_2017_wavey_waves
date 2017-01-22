@@ -24,7 +24,7 @@ namespace Assets.Code
 		{
 			float DuckY = 0;
 
-			float vDecay = 3;
+			float vDecay = 1.05f;
 			float gravity = 1;
 
 			_velocity /= vDecay;
@@ -38,7 +38,7 @@ namespace Assets.Code
 
 				float waveScale = _surface.SmoothStep(WaveOriginData.WAVE_WIDTH, 0, Mathf.Abs((wavePosition - 
 					new Vector2(_transform.position.x, _transform.position.z)).magnitude));
-				float appliedMagnitude = wave.Magnitude * wave.PercentLife * waveScale;
+				float appliedMagnitude = 0.0075f * wave.Magnitude * wave.PercentLife * waveScale;
 
 				DuckY += -Mathf.Cos(cosineInput) * appliedMagnitude * waveScale;
 
