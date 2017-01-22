@@ -49,9 +49,9 @@ namespace Assets.Code
 				Vector2 normal = _waves.Normals.Normals[normalLookupIndex];
 
 				Vector3 forceDirection = new Vector3();
-				forceDirection.x = waveToDuck.x * normal.x;
+				forceDirection.x = waveToDuck.x * Mathf.Abs(normal.x);
 				forceDirection.y = normal.y;
-				forceDirection.z = waveToDuck.y * normal.x;
+				forceDirection.z = waveToDuck.y * Mathf.Abs(normal.x);
 				forceDirection.Normalize();
 
 				affectingNormal += forceDirection * appliedMagnitude;
@@ -63,7 +63,7 @@ namespace Assets.Code
 
 			affectingNormal.Normalize();
 
-			_velocity.y -= gravity;
+			//_velocity.y -= gravity;
 
 			//Quaternion q = new Quaternion();
 			//q.SetFromToRotation(Vector3.up, affectingNormal);
