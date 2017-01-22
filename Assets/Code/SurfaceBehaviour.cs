@@ -17,20 +17,26 @@ namespace Assets.Code
 		void Start ()
 		{
 			WaveOriginData test = new WaveOriginData();
-			test.Magnitude = 0.25f;
-			test.Origin = new Vector3(-5, 0, -5);
 			test.Init();
-			Waves.Add(test);
+			test.Origin = new Vector3(-5, 0, -5);
+			//Waves.Add(test);
 			WaveOriginData test2 = new WaveOriginData();
 			test2.Init();
 			test2.Origin = new Vector3(10, 0, 10);
-			test2.Magnitude = 1.0f;
-			Waves.Add(test2);
+			//Waves.Add(test2);
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
+			if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Space))
+			{
+				WaveOriginData t = new WaveOriginData();
+				t.Init();
+				t.Origin = new Vector3(UnityEngine.Random.value * 20 - 10, 0, UnityEngine.Random.value * 20 - 10);
+				Waves.Add(t);
+			}
+
 			if (Waves.Count > 0)
 			{
 				List<int> deadWaves = new List<int>();
@@ -97,7 +103,7 @@ namespace Assets.Code
 		{
 			float positionInRange = Mathf.Clamp((x - minEdge)/(maxEdge - minEdge), 0.0f, 1.0f);
 
-			return positionInRange*positionInRange*(3 - 2*positionInRange);
+			return positionInRange*positionInRange*(3f - 2f*positionInRange);
 		}
 
 	}

@@ -36,7 +36,11 @@ namespace Assets.Code.Play
 
             //CmdSpawnCursor();
 
-            _inGameHeadingCanvas.StartSession(new InGameHeadingSession {OnExit = _session.OnExit});
+            _inGameHeadingCanvas.StartSession(new InGameHeadingSession {OnExit = () =>
+            {
+                _session.OnExit();
+                CloseSession();
+            }});
         }
         
         //[Command]
@@ -52,9 +56,9 @@ namespace Assets.Code.Play
 
         public void CloseSession()
         {
-            NetworkServer.Destroy(_cursor.gameObject);
-
-
+            //NetworkServer.Destroy(_cursor.gameObject);
+            
+            _network.StopHost();
         }
     }
 }

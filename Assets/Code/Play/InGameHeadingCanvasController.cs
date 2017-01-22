@@ -30,14 +30,16 @@ namespace Assets.Code.Play
                 return;
             }
 
+            _session = session;
+
             ShowCanvas();
         }
 
         private void OnExitButtonClicked()
         {
-            CloseSession();
-
             _session.OnExit();
+
+            CloseSession();
         }
     }
 }
