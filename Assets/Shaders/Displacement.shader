@@ -18,7 +18,7 @@
 		Pass
 		{
 			CGPROGRAM
-			#define MAX_LIFETIME 2.0f
+			#define MAX_LIFETIME 6.0f
 			#define MAX_WAVES 25
 			#define WAVE_VELOCITY 4.0f
 			#define WAVE_WIDTH 2.0f
@@ -95,7 +95,7 @@
 				//v.vertex.y += scale1 * sin(-_Time.z + length(v.vertex.xz + (600, 0))) * 0.1f;
 				
 				o.vertex = mul(UNITY_MATRIX_VP, o.worldPos);
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex) + float2(_SinTime.w, _CosTime.w) * 0.01f;
+				o.uv = TRANSFORM_TEX(v.uv, _MainTex) + float2(_SinTime.w, _CosTime.w) * 0.002f;
 				return o;
 			}
 

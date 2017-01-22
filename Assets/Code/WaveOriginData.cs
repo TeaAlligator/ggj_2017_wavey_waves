@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WaveOriginData
 {
-	public static readonly float WAVE_LIFETIME = 2.0f;
+	public static readonly float WAVE_LIFETIME = 6.0f;
     public readonly static uint MAX_WAVES = 25;
     public readonly static float WAVE_VELOCITY = 4.0f;
     public readonly static float WAVE_WIDTH = 2.0f;
@@ -19,6 +19,7 @@ public class WaveOriginData
 	{
 		Age = 0f;
         Magnitude = 1.0f;
+		PercentLife = 1.0f;
 	}
 
 	public void Update()

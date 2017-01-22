@@ -41,33 +41,33 @@ namespace Assets.Code
 
 				float waveScale = _waves.Surface.SmoothStep(WaveOriginData.WAVE_WIDTH, 0, Mathf.Abs((wavePosition - 
 					new Vector2(_transform.position.x, _transform.position.z)).magnitude));
-				float appliedMagnitude = 0.0075f * wave.Magnitude * wave.PercentLife * waveScale;
+				float appliedMagnitude = wave.Magnitude * wave.PercentLife * waveScale;
 
-				DuckY += -Mathf.Cos(cosineInput) * appliedMagnitude * waveScale;
+				DuckY += -Mathf.Cos(cosineInput) * appliedMagnitude;
 
 				int normalLookupIndex = (int) Mathf.Floor((cosineInput - Mathf.Floor(cosineInput))*255);
 				Vector2 normal = _waves.Normals.Normals[normalLookupIndex];
 
 				Vector3 forceDirection = new Vector3();
-				forceDirection.x = waveToDuck.x * normal.x;
+				forceDirection.x = waveToDuck.x * Mathf.Abs(normal.x);
 				forceDirection.y = normal.y;
-				forceDirection.z = waveToDuck.y * normal.x;
+				forceDirection.z = waveToDuck.y * Mathf.Abs(normal.x);
 				forceDirection.Normalize();
 
-				affectingNormal += forceDirection * appliedMagnitude;
+				affectingNormal += forceDirection * 0.0075f * appliedMagnitude;
 
-				Vector3 waveVelocityContribution = forceDirection * appliedMagnitude;
+				Vector3 waveVelocityContribution = forceDirection * 0.0075f * appliedMagnitude;
 
 				_velocity += waveVelocityContribution;
 			}
 
 			affectingNormal.Normalize();
 
-			_velocity.y -= gravity;
+			//_velocity.y -= gravity;
 
-			Quaternion q = new Quaternion();
-			q.SetFromToRotation(Vector3.up, affectingNormal);
-			Quaternion.Lerp(_transform.rotation, q, 0.1f);
+			//Quaternion q = new Quaternion();
+			//q.SetFromToRotation(Vector3.up, affectingNormal);
+			//Quaternion.Lerp(_transform.rotation, q, 1.0f);
 
 			_transform.position += _velocity;
 

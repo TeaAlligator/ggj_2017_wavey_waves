@@ -13,8 +13,9 @@ namespace Assets.Code.Projectiles
         {
             _waves.Surface.AddWave(new WaveOriginData
             {
-                Origin = transform.position,
-                Age = 0f,
+				Origin = transform.position,
+				Age = 0f,
+				PercentLife = 1.0f,
                 Magnitude = _magnitude
             });
 
