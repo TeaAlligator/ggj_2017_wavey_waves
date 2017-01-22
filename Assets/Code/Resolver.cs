@@ -12,6 +12,8 @@ namespace Assets.Code
 
     class Resolver : MonoBehaviour
     {
+        [SerializeField] private ManualResolverContent[] ManualContent;
+
         private static readonly Dictionary<Type, object> SortedContent = new Dictionary<Type, object>();
         private static bool _isContentSorted = false;
 
@@ -20,9 +22,9 @@ namespace Assets.Code
             var resolveables = GetComponentsInChildren<IResolveable>();
 
             foreach (var reseolvable in resolveables)
-            {
                 RegisterItem(reseolvable.GetType(), reseolvable);
-            }
+            foreach (var manualContent in ManualContent)
+                RegisterItem(manualContent.Content.GetType(), manualContent.Content);
 
             _isContentSorted = true;
         }

@@ -1,12 +1,13 @@
 ﻿using Assets.Code.Input;
 using Assets.Code.Profile;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Code.Player
 {
-    class Cursor : MonoBehaviour
+    class Cursor : NetworkBehaviour
     {
-        [SerializeField] private NetworkView _netView;
+        [SerializeField] private NetworkIdentity _netId;
         [SerializeField] private MeshRenderer _mesh;
 
         [AutoResolve] private GroundRaycaster _groundCast;
@@ -30,7 +31,7 @@ namespace Assets.Code.Player
 
         protected void Update()
         {
-            if(_netView.isMine) HandleInput();
+            if(_netId.localPlayerAuthority) HandleInput();
             else HandleLerp();
         }
 

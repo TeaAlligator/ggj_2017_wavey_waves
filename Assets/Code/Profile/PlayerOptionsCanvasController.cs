@@ -112,7 +112,7 @@ namespace Assets.Code.Profile
             _session = null;
         }
 
-        protected override void CloseSession()
+        public override void CloseSession()
         {
             ClearSwatches();
 

@@ -21,7 +21,7 @@ namespace Assets.Code
             _canvas.gameObject.SetActive(false);
         }
 
-        protected virtual void CloseSession()
+        public virtual void CloseSession()
         {
             HideCanvas();
         }

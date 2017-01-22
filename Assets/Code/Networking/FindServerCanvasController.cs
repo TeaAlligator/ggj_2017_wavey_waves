@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.Networking.Match;
 using UnityEngine.UI;
 
 namespace Assets.Code.Networking
@@ -13,7 +15,7 @@ namespace Assets.Code.Networking
 
     struct FindServerResult
     {
-        public HostData Server;
+        public MatchInfoSnapshot MatchInfo;
         public bool WasSuccessful;
     }
 
@@ -27,12 +29,12 @@ namespace Assets.Code.Networking
         [SerializeField] private ServerListing _listingPrefab;
         
         [AutoResolve] private NetworkManager _network;
+        [AutoResolve] private NetworkMatchManager _match;
 
         private List<ServerListing> _listings; 
 
         private FindServerResult _currentSelection;
         private FindServerSession _session;
-        private SubscribedEventToken _onNewHostList;
 
         protected override void Awake()
         {
@@ -53,7 +55,6 @@ namespace Assets.Code.Networking
             RefreshServers();
 
             _currentSelection.WasSuccessful = false;
-            _onNewHostList = _network.OnNewHostList.Subscribe(OnNewHostList);
 
             _session = session;
         }
@@ -68,13 +69,13 @@ namespace Assets.Code.Networking
 
         private void RefreshServers()
         {
-            _network.RefreshHostList();
+            _match.Maker.ListMatches(0, 100, "", true, 0, 0, OnMatchList);
         }
 
-        private void AddServerListing(HostData server)
+        private void AddServerListing(MatchInfoSnapshot matchInfo)
         {
             var listing = Instantiate(_listingPrefab).GetComponent<ServerListing>();
-            listing.StartSession(new ServerListingSession {Server = server, OnSelected = OnServerSelected});
+            listing.StartSession(new ServerListingSession {MatchInfo = matchInfo, OnSelected = OnServerSelected});
 
             listing.transform.SetParent(_serverListTransform);
             listing.transform.localScale = Vector3.one;
@@ -112,15 +113,14 @@ namespace Assets.Code.Networking
             _session = null;
         }
 
-        private void OnNewHostList(HostData[] datas)
+        private void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> datas)
         {
             foreach (var data in datas)
                 AddServerListing(data);
         }
         
-        protected override void CloseSession()
+        public override void CloseSession()
         {
-            _onNewHostList.Cancel();
             ClearServerList();
 
             base.CloseSession();
