@@ -18,7 +18,7 @@
 		Pass
 		{
 			CGPROGRAM
-			#define MAX_LIFETIME 2.0f
+			#define MAX_LIFETIME 6.0f
 			#define MAX_WAVES 25
 			#define WAVE_VELOCITY 4.0f
 			#define WAVE_WIDTH 2.0f
