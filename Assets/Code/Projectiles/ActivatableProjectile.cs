@@ -1,6 +1,5 @@
 ﻿using System;
 using Assets.Code.Player;
-using UnityEngine;
 
 namespace Assets.Code.Projectiles
 {
@@ -28,7 +27,6 @@ namespace Assets.Code.Projectiles
 
         protected virtual void Activate()
         {
-            Debug.Log("ACTIVATION");
             Destroy(gameObject);
         }
     }
