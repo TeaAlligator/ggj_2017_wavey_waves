@@ -19,7 +19,7 @@ namespace Assets.Code
 			WaveOriginData test = new WaveOriginData();
 			test.Init();
 			test.Origin = new Vector3(-5, 0, -5);
-			Waves.Add(test);
+			//Waves.Add(test);
 			WaveOriginData test2 = new WaveOriginData();
 			test2.Init();
 			test2.Origin = new Vector3(10, 0, 10);
