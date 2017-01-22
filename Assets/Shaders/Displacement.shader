@@ -69,21 +69,23 @@
 					float maskScale = tex2Dlod(_Mask, float4(v.uv, 0, 0)).r;
 				#endif
 
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+
 				// Offset based on each incoming wave.
 				for (int i = 0; i < MAX_WAVES; i++)
 				{
-					float2 waveDirection = normalize(v.vertex.xz - waves[i].xy);
+					float2 waveDirection = normalize(o.worldPos.xz - waves[i].xy);
 					float2 wavePos = waves[i].xy + waveDirection * WAVE_VELOCITY * ((1.0f - waves[i].z) * MAX_LIFETIME);
-					float scale = smoothstep(WAVE_WIDTH, 0, abs(length(wavePos - v.vertex.xz)));
+					float scale = smoothstep(WAVE_WIDTH, 0, abs(length(wavePos - o.worldPos.xz)));
 
 					//v.vertex.y += (scale * 0.1f) *
 					//	(_HeightInit * (exp(-_Time.y * 0.5f * _Decay) * cos((2 * M_PI) * -_Speed * _Time.y * 0.5f + length((v.vertex.xz - waves[0].xy - float2(0.1, 0.1)) * 30.0f))));
 
-					v.vertex.y +=
+					o.worldPos.y +=
 					#ifdef _USE_MASK
 						maskScale *
 					#endif
-						-cos(-_Time.y * 0.5f + length(v.vertex.xz - waves[i].xy)) * (waves[i].w * waves[i].z * scale);
+						-cos(-_Time.y * 0.5f + length(o.worldPos.xz - waves[i].xy)) * (waves[i].w * waves[i].z * scale);
 				}
 
 				// Global motion
@@ -91,9 +93,8 @@
 				//v.vertex.y += scale1 * sin(_Time.z + length(v.vertex.xz)) * 0.1f;
 				//v.vertex.y += scale1 * sin(-_Time.z * 0.5f + length(v.vertex.xz - (0, 600))) * 0.1f;
 				//v.vertex.y += scale1 * sin(-_Time.z + length(v.vertex.xz + (600, 0))) * 0.1f;
-
-				o.worldPos = mul(v.vertex, unity_ObjectToWorld);
-				o.vertex = UnityObjectToClipPos(v.vertex);
+				
+				o.vertex = mul(UNITY_MATRIX_VP, o.worldPos);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex) + float2(_SinTime.w, _CosTime.w) * 0.01f;
 				return o;
 			}
