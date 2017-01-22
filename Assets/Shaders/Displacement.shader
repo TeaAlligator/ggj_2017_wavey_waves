@@ -60,8 +60,9 @@
 					v.vertex.y += -cos(-_Time.y * 0.5f + length(v.vertex.xz - waves[i].xy)) * (waves[i].w * waves[i].z * scale);
 				}
 
-				v.vertex.y += cos(_Time.z + length(v.vertex.xz)) * 0.1f;
-				v.vertex.y += sin(_Time.z + length(v.vertex.xz)) * 0.1f;
+				//v.vertex.y += cos(_Time.z + length(v.vertex.xz)) * 0.1f;
+				v.vertex.y += sin(-_Time.z + length(v.vertex.xz + (600, 0))) * 0.05f;
+				v.vertex.y += sin(-_Time.z + length(v.vertex.xz - (0,600))) * 0.05f;
 
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 				o.vertex = UnityObjectToClipPos(v.vertex);
@@ -86,7 +87,8 @@
 				// Lighting.
 				{
 					col *= max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
-					col.rgb *= _LightColor0;
+					//col.rgb *= _LightColor0;
+					col.rgb *= 1;
 				}
 
 				return col;
