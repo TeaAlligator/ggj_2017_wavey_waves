@@ -54,7 +54,7 @@ namespace Assets.Code
 				forceDirection.z = waveToDuck.y * Mathf.Abs(normal.x);
 				forceDirection.Normalize();
 
-				affectingNormal += forceDirection * 0.0075f * appliedMagnitude;
+				affectingNormal += forceDirection * appliedMagnitude;
 
 				Vector3 waveVelocityContribution = forceDirection * 0.0075f * appliedMagnitude;
 
@@ -66,12 +66,15 @@ namespace Assets.Code
 			//_velocity.y -= gravity;
 
 			//Quaternion q = new Quaternion();
+
+			_transform.rotation.SetFromToRotation(_transform.rotation * Vector3.up, affectingNormal);
+
 			//q.SetFromToRotation(Vector3.up, affectingNormal);
 			//Quaternion.Lerp(_transform.rotation, q, 1.0f);
 
 			_transform.position += _velocity;
 
-			_transform.position = new Vector3(_transform.position.x, DuckY, _transform.position.z);
+			_transform.position = new Vector3(_transform.position.x, Mathf.Lerp(_transform.position.y, DuckY, 0.25f), _transform.position.z);
 
 			_runtime += Time.deltaTime;
 		}
