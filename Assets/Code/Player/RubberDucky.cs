@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using Assets.Code.Input;
+using Assets.Code.Play;
+using Assets.Code.Weapons;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -15,8 +18,11 @@ namespace Assets.Code.Player
     class RubberDucky : NetworkBehaviour
     {
         [SerializeField] private NetworkIdentity _netId;
-
         [SerializeField] private readonly float _maximumHealth = 100f;
+
+        [AutoResolve] private GroundRaycaster _groundCast;
+        [AutoResolve] private ButtonKnower _buttonKnower;
+        [AutoResolve] private DuckInspectCanvasController _inspectDuck;
 
         private float _health;
         public float Health
@@ -40,23 +46,55 @@ namespace Assets.Code.Player
         }
         public float HealthPercent { get; private set; }
         public SubscribedEvent<HealthChangedData> OnHealthChanged;
-
-        public List<Projectile> Projectiles;
-        public Projectile SelectedProjectile;
+        
+        public List<Weapon> Weapons;
+        public Weapon SelectedWeapon;
 
         protected void Awake()
         {
-            Projectiles = new List<Projectile>();
+            Resolver.AutoResolve(this);
+
+            _health = _maximumHealth;
+
+            OnHealthChanged = new SubscribedEvent<HealthChangedData>();
+        }
+
+        public override void OnStartLocalPlayer()
+        {
+            _inspectDuck.StartSession(new DuckInfoSession
+            {
+                Subject = this
+            });
+
+            base.OnStartLocalPlayer();
         }
 
         protected void Update()
         {
-            
+            if (isLocalPlayer) HandleInput();
         }
 
-	    private void Fire( /*projectile type*/)
+        private void HandleInput()
+        {
+            if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButton("fire"))
+            {
+                transform.rotation.SetLookRotation(transform.position -
+                    _groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
+                    Vector3.up);
+            }
+
+            if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))
+            {
+                CmdShoot();
+            }
+        }
+
+        [Command]
+	    private void CmdShoot()
 	    {
-		    // do thing
+	        if (SelectedWeapon == null || !SelectedWeapon.CanActivate()) return;
+
+            SelectedWeapon.Activate(this);
 	    }
     }
 }

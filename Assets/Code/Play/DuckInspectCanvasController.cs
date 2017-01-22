@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Code.Player;
+using Assets.Code.Weapons;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,9 +18,9 @@ namespace Assets.Code.Play
         [SerializeField] private Slider _healthLerpSlider;
         [SerializeField] private HorizontalLayoutGroup _projectilesLayout;
 
-        [SerializeField] private ProjectileButton _projectileButtonPrefab;
+        [SerializeField] private WeaponSelectionButton _weaponSelectionButtonPrefab;
 
-        private List<ProjectileButton> _projectileButtons;
+        private List<WeaponSelectionButton> _projectileButtons;
 
         private DuckInfoSession _session;
         private SubscribedEventToken _onHealthChanged;
@@ -32,7 +33,7 @@ namespace Assets.Code.Play
 
         protected override void Awake()
         {
-            _projectileButtons = new List<ProjectileButton>();
+            _projectileButtons = new List<WeaponSelectionButton>();
 
             base.Awake();
         }
@@ -53,16 +54,16 @@ namespace Assets.Code.Play
 
             _healthLerpSlider.value = _session.Subject.HealthPercent;
             _healthMechanicalSlider.value = _session.Subject.HealthPercent;
-            foreach(var projectile in _session.Subject.Projectiles)
+            foreach(var projectile in _session.Subject.Weapons)
                 AddProjectileButton(projectile);
 
             _session = session;
         }
 
-        private void AddProjectileButton(Projectile projectile)
+        private void AddProjectileButton(Weapon weapon)
         {
-            var button = Instantiate(_projectileButtonPrefab);
-            button.StartSession(new ProjectileButtonSession {Subject = projectile, OnSelected = () => OnProjectileSelected(projectile)});
+            var button = Instantiate(_weaponSelectionButtonPrefab);
+            button.StartSession(new WeaponSelectionButtonSession {Subject = weapon, OnSelected = () => OnProjectileSelected(weapon)});
 
             button.transform.SetParent(_projectilesLayout.transform);
             button.transform.localScale = Vector3.one;
@@ -70,9 +71,9 @@ namespace Assets.Code.Play
             _projectileButtons.Add(button);
         }
 
-        private void OnProjectileSelected(Projectile projectile)
+        private void OnProjectileSelected(Weapon weapon)
         {
-            _session.Subject.SelectedProjectile = projectile;
+            _session.Subject.SelectedWeapon = weapon;
 
             foreach (var button in _projectileButtons)
                 button.UnHighlight();

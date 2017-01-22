@@ -23,10 +23,13 @@ namespace Assets.Code.Input
 
         protected void Update()
         {
-            if (UnityEngine.Input.GetButtonDown("rotate_camera"))
+            if (UnityEngine.Input.GetButtonDown("move_camera"))
             {
                 _focus.StartLerpPosition(_groundRay.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
                     _positionLerpSpeed);
+            }
+            if (UnityEngine.Input.GetButtonDown("rotate_camera"))
+            {
                 _pivot.EnableRotation();
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;

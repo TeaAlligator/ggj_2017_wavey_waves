@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Code.Player;
 using Assets.Code.Profile;
 using UnityEngine;
 using UnityEngine.Networking;

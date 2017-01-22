@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Assets.Code.Player;
+using UnityEngine;
 
-namespace Assets.Code
+namespace Assets.Code.Weapons
 {
-    class Projectile : MonoBehaviour
+    class Weapon : MonoBehaviour
     {
         [SerializeField] public string ScreenName;
         [SerializeField] public Sprite Icon;
@@ -16,10 +17,15 @@ namespace Assets.Code
         public SubscribedEvent<int> OnAmmoCountChanged;
         public SubscribedEvent OnUnequipped;
 
-        public virtual void Activate()
+        protected virtual void Awake()
         {
-            
+            OnAmmoCountChanged = new SubscribedEvent<int>();
+            OnUnequipped = new SubscribedEvent();
         }
+
+        public virtual void Activate(RubberDucky sender) {}
+
+        public virtual bool CanActivate() { return CurrentAmmo > 0;}
 
         protected virtual void Update()
         {

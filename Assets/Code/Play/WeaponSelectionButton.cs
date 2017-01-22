@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Globalization;
+using Assets.Code.Weapons;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Code.Play
 {
-    class ProjectileButtonSession
+    class WeaponSelectionButtonSession
     {
-        public Projectile Subject;
+        public Weapon Subject;
 
         public Action OnSelected;
     }
 
-    class ProjectileButton : MonoBehaviour
+    class WeaponSelectionButton : MonoBehaviour
     {
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private Image _iconImage;
@@ -23,7 +24,7 @@ namespace Assets.Code.Play
         [SerializeField] private Color _normalColor;
         [SerializeField] private Color _selectedColor;
 
-        private ProjectileButtonSession _session;
+        private WeaponSelectionButtonSession _session;
 
         private SubscribedEventToken _onAmmoCountChanged;
         private SubscribedEventToken _onUnequipped;
@@ -33,7 +34,7 @@ namespace Assets.Code.Play
             _selectionButton.onClick.AddListener(OnSelectionButtonClicked);
         }
 
-        public void StartSession(ProjectileButtonSession session)
+        public void StartSession(WeaponSelectionButtonSession session)
         {
             if (_session != null) return;
             
@@ -76,7 +77,7 @@ namespace Assets.Code.Play
 
         protected void Update()
         {
-            _rechargeSlider.value = _session.Subject.CurrentAmmo / (float) _session.Subject.MaxAmmo;
+            _rechargeSlider.value = _session.Subject.CurrentRechargeProgress / _session.Subject.RechargeTime;
         }
 
         public void TearDown()
