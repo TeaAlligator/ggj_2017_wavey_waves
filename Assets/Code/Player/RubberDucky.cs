@@ -55,6 +55,7 @@ namespace Assets.Code.Player
             Resolver.AutoResolve(this);
 
             _health = _maximumHealth;
+            HealthPercent = 1.0f;
 
             OnHealthChanged = new SubscribedEvent<HealthChangedData>();
         }
