@@ -5,7 +5,7 @@ namespace Assets.Code
 {
 	public class TerrainBobBehavior : MonoBehaviour
 	{
-		[SerializeField] private Manager _manager;
+		[SerializeField] private WaveManager _waveManager;
 		[SerializeField] private Transform _transform;
 		[SerializeField] private SurfaceBehaviour _surface;
 

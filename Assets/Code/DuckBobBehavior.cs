@@ -1,22 +1,23 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Code
 {
 	public class DuckBobBehavior : MonoBehaviour
 	{
-		[SerializeField] private Manager _manager;
 		[SerializeField] private Transform _transform;
-		[SerializeField] private SurfaceBehaviour _surface;
-
+        
+		[AutoResolve] private WaveManager _waves;
+        
 		private Vector3 _velocity = new Vector3(0, 0, 0);
 
 		private float _runtime;
 
 		// Use this for initialization
-		void Start ()
+		protected void Awake ()
 		{
 			_runtime = 0;
+
+            Resolver.AutoResolve(this);
 		}
 	
 		// Update is called once per frame
@@ -29,14 +30,14 @@ namespace Assets.Code
 
 			_velocity /= vDecay;
 
-			foreach (WaveOriginData wave in _surface.Waves)
+			foreach (WaveOriginData wave in _waves.Surface.Waves)
 			{
 				Vector2 waveToDuck = new Vector2(_transform.position.x, _transform.position.z) - new Vector2(wave.Origin.x, wave.Origin.z);
 				Vector2 wavePosition = new Vector2(wave.Origin.x, wave.Origin.z) + waveToDuck.normalized * WaveOriginData.WAVE_VELOCITY * wave.Age;
 
 				float cosineInput = (-_runtime * 0.5f + (waveToDuck).magnitude);
 
-				float waveScale = _surface.SmoothStep(WaveOriginData.WAVE_WIDTH, 0, Mathf.Abs((wavePosition - 
+				float waveScale = _waves.Surface.SmoothStep(WaveOriginData.WAVE_WIDTH, 0, Mathf.Abs((wavePosition - 
 					new Vector2(_transform.position.x, _transform.position.z)).magnitude));
 				float appliedMagnitude = 0.0075f * wave.Magnitude * wave.PercentLife * waveScale;
 
@@ -46,7 +47,7 @@ namespace Assets.Code
 
 				Vector3 forceDirection = new Vector3();
 				forceDirection.x = waveToDuck.x;
-				forceDirection.y = _manager.Normals.Normals[normalLookupIndex].y;
+				forceDirection.y = _waves.Normals.Normals[normalLookupIndex].y;
 				forceDirection.z = waveToDuck.y;
 				forceDirection.Normalize();
 
