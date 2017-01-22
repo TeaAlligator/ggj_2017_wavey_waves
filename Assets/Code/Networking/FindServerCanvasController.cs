@@ -93,7 +93,6 @@ namespace Assets.Code.Networking
         private void OnConnectButtonClicked()
         {
             var call = _session.OnConfirmed;
-
             CloseSession();
 
             call(_currentSelection);
@@ -107,10 +106,10 @@ namespace Assets.Code.Networking
 
         private void OnCancelButtonClicked()
         {
+            var call = _session.OnCancelled;
             CloseSession();
 
-            _session.OnCancelled();
-            _session = null;
+            call();
         }
 
         private void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> datas)

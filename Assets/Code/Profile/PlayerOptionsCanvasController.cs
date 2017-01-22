@@ -98,18 +98,18 @@ namespace Assets.Code.Profile
         
         private void OnAcceptClicked()
         {
+            var call = _session.OnConfirmed;
             CloseSession();
 
-            _session.OnConfirmed(new PlayerOptionsResult { Details = _player, WasSuccessful = true });
-            _session = null;
+            call(new PlayerOptionsResult { Details = _player, WasSuccessful = true });
         }
 
         private void OnCancelClicked()
         {
+            var call = _session.OnCancelled;
             CloseSession();
 
-            _session.OnCancelled();
-            _session = null;
+            call();
         }
 
         public override void CloseSession()

@@ -82,18 +82,18 @@ namespace Assets.Code.Networking
 
         private void OnAcceptClicked()
         {
-            var onConfirmed = _session.OnConfirmed;
+            var call = _session.OnConfirmed;
             CloseSession();
 
-            onConfirmed(new HostOptionsResult { Details = _server, WasSuccessful = true });
+            call(new HostOptionsResult { Details = _server, WasSuccessful = true });
         }
 
         private void OnCancelClicked()
         {
+            var call = _session.OnCancelled;
             CloseSession();
 
-            _session.OnCancelled();
-            _session = null;
+            call();
         }
 
         private static ServerHostingDetails GenerateDefaultServer()
