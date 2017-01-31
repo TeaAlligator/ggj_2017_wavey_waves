@@ -28,6 +28,14 @@ namespace Assets.Code.Input
                 _focus.StartLerpPosition(_groundRay.GetMouseGroundPosition(UnityEngine.Input.mousePosition),
                     _positionLerpSpeed);
             }
+            if (UnityEngine.Input.GetButtonDown("pan_camera"))
+            {
+                _focus.StartPan();
+            }
+            if (UnityEngine.Input.GetButtonUp("pan_camera"))
+            {
+                _focus.EndPan();
+            }
             if (UnityEngine.Input.GetButtonDown("rotate_camera"))
             {
                 _pivot.EnableRotation();

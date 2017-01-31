@@ -6,6 +6,7 @@ using Assets.Code.Play;
 using Assets.Code.Projectiles;
 using Assets.Code.Weapons;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Networking;
 
 namespace Assets.Code.Player
@@ -55,21 +56,21 @@ namespace Assets.Code.Player
             });
 
             base.OnStartLocalPlayer();
-
-            PooledAudioRequest temp = new PooledAudioRequest();
-            temp.Sound = MoveSounds.GetRandomItem();
-            temp.Target = this.transform.position;
-
-            _audioPooler.PlaySound(temp);
+            
+            _audioPooler.PlaySound(new PooledAudioRequest
+            {
+                Sound = HurtSounds.Count > 0 ? MoveSounds.GetRandomItem() : null,
+                Target = transform.position
+            });
         }
 
         private void OnHealthChanged(HealthChangedData data)
         {
-            PooledAudioRequest temp = new PooledAudioRequest();
-            temp.Sound = HurtSounds.GetRandomItem();
-            temp.Target = this.transform.position;
-
-            _audioPooler.PlaySound(temp);
+            _audioPooler.PlaySound(new PooledAudioRequest
+            {
+                Sound = HurtSounds.Count > 0 ? HurtSounds.GetRandomItem() : null,
+                Target = transform.position
+            });
         }
 
         protected void Update()
@@ -88,22 +89,22 @@ namespace Assets.Code.Player
 
             if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))
             {
-                PooledAudioRequest temp = new PooledAudioRequest();
-                temp.Sound = AttackSounds.GetRandomItem();
-                temp.Target = this.transform.position;
-
-                _audioPooler.PlaySound(temp);
+                _audioPooler.PlaySound(new PooledAudioRequest
+                {
+                    Sound = HurtSounds.Count > 0 ? AttackSounds.GetRandomItem() : null,
+                    Target = transform.position
+                });
 
                 CmdShoot();
             }
 
             if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("activate"))
             {
-                PooledAudioRequest temp = new PooledAudioRequest();
-                temp.Sound = BoomSounds.GetRandomItem();
-                temp.Target = this.transform.position;
-
-                _audioPooler.PlaySound(temp);
+                _audioPooler.PlaySound(new PooledAudioRequest
+                {
+                    Sound = HurtSounds.Count > 0 ? BoomSounds.GetRandomItem() : null,
+                    Target = transform.position
+                });
 
                 CmdActivate();
             }

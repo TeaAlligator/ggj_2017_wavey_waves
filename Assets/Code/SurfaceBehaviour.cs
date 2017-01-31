@@ -93,8 +93,8 @@ namespace Assets.Code
 			Waves.Remove(wave);
 		}
 
-        [Command]
-		public void CmdAddWave(WaveOriginData wave)
+        [ClientRpc]
+		public void RpcAddWave(WaveOriginData wave)
 		{
 			Waves.Add(wave);
 		}

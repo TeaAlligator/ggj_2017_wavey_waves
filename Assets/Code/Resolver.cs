@@ -34,7 +34,7 @@ namespace Assets.Code
             if (SortedContent.ContainsKey(registerType))
                 return;
 
-			Debug.Log(registerType);
+			//Debug.Log(registerType);
 
             SortedContent.Add(registerType, item);
         }

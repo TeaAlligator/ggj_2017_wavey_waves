@@ -11,7 +11,7 @@ namespace Assets.Code.Projectiles
 
         protected override void Activate()
         {
-            _waves.Surface.CmdAddWave(new WaveOriginData
+            _waves.Surface.RpcAddWave(new WaveOriginData
             {
 				Origin = transform.position,
 				Age = 0f,

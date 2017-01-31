@@ -51,12 +51,13 @@ namespace Assets.Code.Audio
 
         public AudioToken PlaySound(PooledAudioRequest request)
         {
-            for (var i = 0; i < NumberOfSources; i++)
-                if (!_sources[i].IsActive)
-                {
-                    var source = _sources[i];
-                    return source.PlaySound(request);
-                }
+            if (request.Sound != null)
+                for (var i = 0; i < NumberOfSources; i++)
+                    if (!_sources[i].IsActive)
+                    {
+                        var source = _sources[i];
+                        return source.PlaySound(request);
+                    }
             
             return new AudioToken
             {
