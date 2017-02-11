@@ -15,7 +15,7 @@ namespace Assets.Code.Play
 
     class WeaponSelectionButton : MonoBehaviour
     {
-        [SerializeField] private Image _backgroundImage;
+        [SerializeField] private Image _switchImage;
         [SerializeField] private Image _iconImage;
         [SerializeField] private Text _ammoText;
         [SerializeField] private Slider _rechargeSlider;
@@ -27,7 +27,9 @@ namespace Assets.Code.Play
         private WeaponSelectionButtonSession _session;
 
         private SubscribedEventToken _onAmmoCountChanged;
-        private SubscribedEventToken _onEquipped;
+        private SubscribedEventToken _onSwitchedToStarted;
+        private SubscribedEventToken _onSwitchedToFinished;
+        private SubscribedEventToken _onSwitchedFromStarted;
         private SubscribedEventToken _onUnequipped;
 
         protected void Awake()
@@ -47,6 +49,9 @@ namespace Assets.Code.Play
 
             _onAmmoCountChanged = _session.Subject.OnAmmoCountChanged.Subscribe(OnAmmoCountChanged);
             _onUnequipped = _session.Subject.OnUnequipped.Subscribe(OnUnequipped);
+            _onSwitchedToStarted = _session.Subject.OnSwitchedToStarted.Subscribe(OnSwitchedToStarted);
+            _onSwitchedToFinished = _session.Subject.OnSwitchedToFinished.Subscribe(OnSwitchedToFinished);
+            _onSwitchedFromStarted = _session.Subject.OnSwitchedFromStarted.Subscribe(OnSwitchedFromStarted);
         }
 
         private void OnAmmoCountChanged(int ammo)
@@ -59,32 +64,39 @@ namespace Assets.Code.Play
             TearDown();
         }
 
+        private void OnSwitchedToStarted()
+        {
+            _switchImage.color = _normalColor;
+        }
+
+        private void OnSwitchedToFinished()
+        {
+            _switchImage.color = _selectedColor;
+        }
+
+        private void OnSwitchedFromStarted()
+        {
+            _switchImage.color = _normalColor;
+        }
+
         private void OnSelectionButtonClicked()
         {
             _session.OnSelected();
-
-            Highlight();
-        }
-
-        public void Highlight()
-        {
-            _backgroundImage.color = _selectedColor;
-        }
-
-        public void UnHighlight()
-        {
-            _backgroundImage.color = _normalColor;
         }
 
         protected void Update()
         {
             _rechargeSlider.value = _session.Subject.CurrentRechargeProgress / _session.Subject.RechargeTime;
+
+            _switchImage.fillAmount = _session.Subject.Switcher.SwitchPercent;
         }
 
         public void TearDown()
         {
             _onAmmoCountChanged.Cancel();
             _onUnequipped.Cancel();
+            _onSwitchedToStarted.Cancel();
+            _onSwitchedToFinished.Cancel();
         }
     }
 }

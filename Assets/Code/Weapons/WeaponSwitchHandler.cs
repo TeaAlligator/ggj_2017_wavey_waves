@@ -7,14 +7,17 @@ namespace Assets.Code.Weapons
     {
         [SerializeField] private Transform _visualRoot;
 
+        [SerializeField] public float SwitchPercent;
+
         private const float ShowLerpPow = 1 / 4f;
         private const float HideLerpPow = 4f;
 
         public bool IsSwitching { get; private set; }
+
         private bool _hideOnFinish = false;
+        private float _lerpProgress;
         private Vector3 _lerpOld;
         private Vector3 _lerpTarget;
-        private float _lerpProgress;
         private float _lerpTime;
         private float _lerpPow;
 
@@ -31,6 +34,7 @@ namespace Assets.Code.Weapons
             if (!IsSwitching) return;
             
             _lerpProgress += Time.deltaTime;
+            SwitchPercent = (_hideOnFinish ? 1 - _lerpProgress / _lerpTime : _lerpProgress / _lerpTime) ;
 
             _visualRoot.localScale = Vector3.Lerp(_lerpOld, _lerpTarget,
                 Mathf.Pow(_lerpProgress / _lerpTime, _lerpPow));

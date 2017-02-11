@@ -7,7 +7,7 @@ namespace Assets.Code.Weapons
     {
         [SerializeField] public string ScreenName;
         [SerializeField] public Sprite Icon;
-        [SerializeField] private WeaponSwitchHandler _switcher;
+        [SerializeField] public WeaponSwitchHandler Switcher;
 
         [SerializeField] public int CurrentAmmo;
         [SerializeField] public int MaxAmmo = 3;
@@ -41,7 +41,7 @@ namespace Assets.Code.Weapons
 
         public virtual bool CanActivate()
         {
-            return CurrentAmmo > 0 && !_switcher.IsSwitching;
+            return CurrentAmmo > 0 && !Switcher.IsSwitching;
         }
 
         protected virtual void Update()
@@ -65,14 +65,14 @@ namespace Assets.Code.Weapons
         {
             OnSwitchedToStarted.Invoke();
 
-            _switcher.Show(SwitchToSpeed, OnSwitchedToFinished.Invoke);
+            Switcher.Show(SwitchToSpeed, OnSwitchedToFinished.Invoke);
         }
 
         public virtual void SwitchFrom()
         {
             OnSwitchedFromStarted.Invoke();
 
-            _switcher.Hide(SwitchFromSpeed, OnSwitchedFromFinished.Invoke);
+            Switcher.Hide(SwitchFromSpeed, OnSwitchedFromFinished.Invoke);
         }
 
         public virtual void Equip(RubberDucky duck)
@@ -82,7 +82,7 @@ namespace Assets.Code.Weapons
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
 
-            _switcher.HideInstantly();
+            Switcher.HideInstantly();
 
             OnEquipped.Invoke();
         }

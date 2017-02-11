@@ -74,9 +74,6 @@ namespace Assets.Code.Play
         private void OnProjectileSelected(Weapon weapon)
         {
             _session.Subject.SwitchWeapons(weapon);
-
-            foreach (var button in _projectileButtons)
-                button.UnHighlight();
         }
 
         private void OnSubjectHealthChanged(HealthChangedData data)
