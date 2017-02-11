@@ -73,7 +73,7 @@ namespace Assets.Code.Play
 
         private void OnProjectileSelected(Weapon weapon)
         {
-            _session.Subject.SwitchWeapons(weapon);
+            _session.Subject.SwitchWeapon(weapon);
         }
 
         private void OnSubjectHealthChanged(HealthChangedData data)

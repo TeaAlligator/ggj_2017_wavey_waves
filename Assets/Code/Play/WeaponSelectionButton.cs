@@ -86,7 +86,7 @@ namespace Assets.Code.Play
 
         protected void Update()
         {
-            _rechargeSlider.value = _session.Subject.CurrentRechargeProgress / _session.Subject.RechargeTime;
+            _rechargeSlider.value = _session.Subject.CurrentRechargeProgress / _session.Subject.CurrentlyApplicableRechargeTime;
 
             _switchImage.fillAmount = _session.Subject.Switcher.SwitchPercent;
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using Assets.Code.Audio;
 using Assets.Code.Extensions;
 using Assets.Code.Input;
@@ -84,15 +85,16 @@ namespace Assets.Code.Player
         }
 
         private void HandleInput()
-		{
-			FacingTransform.rotation = Quaternion.Euler(0,
-				AngleMath.SignedAngleBetween(
-					Vector3.forward,
-					_groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition) -
+        {
+            FacingTransform.rotation = Quaternion.Euler(0,
+                AngleMath.SignedAngleBetween(
+                    Vector3.forward,
+                    _groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition) -
                     transform.position,
-					Vector3.up), 0);
+                    Vector3.up), 0);
 
-            if (!_betterInput.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))
+            if (_betterInput.IsMouseInWindow() && !_betterInput.WasJustADamnedButton() &&
+                UnityEngine.Input.GetButtonUp("fire"))
             {
                 _audioPooler.PlaySound(new PooledAudioRequest
                 {
@@ -103,7 +105,8 @@ namespace Assets.Code.Player
                 CmdShoot();
             }
 
-            if (!_betterInput.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("activate"))
+            if (_betterInput.IsMouseInWindow() && !_betterInput.WasJustADamnedButton()
+                && UnityEngine.Input.GetButtonUp("activate"))
             {
                 _audioPooler.PlaySound(new PooledAudioRequest
                 {
@@ -113,17 +116,39 @@ namespace Assets.Code.Player
 
                 CmdActivate();
             }
-        }
 
+            // switching weapons
+            if (_betterInput.IsMouseInWindow())
+            {
+                for (var i = 0; i < 10; i++)
+                    if (i < Weapons.Count)
+                        if (UnityEngine.Input.GetButtonDown(string.Format("equip_{0}", i.ToString(CultureInfo.InvariantCulture))))
+                            SwitchWeapon(Weapons[i]);
+
+                if (UnityEngine.Input.GetButtonDown("equip_null"))
+                    SwitchWeapon(null);
+            }
+        }
+    
         public void AddActivatable(ProjectileActivation act)
         {
             _activationQueue.Enqueue(act);
         }
 
-        public void SwitchWeapons(Weapon targetWeapon)
+        public void SwitchWeapon(Weapon targetWeapon)
         {
             // we don't switch if the weapons are the same
-            if (targetWeapon == SelectedWeapon) return;
+            if (targetWeapon == SelectedWeapon)
+            {
+                if (_onWeaponSwitchedFrom != null)
+                {
+                    _onWeaponSwitchedFrom.Cancel();
+                    _onWeaponSwitchedFrom = null;
+                }
+
+                SelectedWeapon.Switcher.SwitchTo();
+                return;
+            }
 
             if (_onWeaponSwitchedFrom != null)
             {
@@ -135,19 +160,17 @@ namespace Assets.Code.Player
                 return;
             }
 
-            // if we currently have a weapon
+            // if we currently have a weapon (not the target one)
             // we gotta switch from it
-            if (SelectedWeapon != null)
+            if (SelectedWeapon != null && SelectedWeapon != targetWeapon)
             {
                 _targetSwitchWeapon = targetWeapon;
 
                 _onWeaponSwitchedFrom = SelectedWeapon.Switcher.OnSwitchedFromFinished.Subscribe(OnWeaponSwitchedFromFinished);
                 SelectedWeapon.Switcher.SwitchFrom();
-
-                SelectedWeapon = null;
             }
 
-            // but if we did not have a weapon
+            // but if we did not have a weapon (or had the target one)
             // then we can immediately switch to our new one
             else
             {
@@ -161,13 +184,14 @@ namespace Assets.Code.Player
             // clean up our subscription
             _onWeaponSwitchedFrom.Cancel();
             _onWeaponSwitchedFrom = null;
+            
+            SelectedWeapon = _targetSwitchWeapon;
 
             // it's possible we switched to no weapon
             // gotta handle that
             if (_targetSwitchWeapon == null) return;
             
             // otherwise switch to our new weapon
-            SelectedWeapon = _targetSwitchWeapon;
             SelectedWeapon.Switcher.SwitchTo();
         }
 

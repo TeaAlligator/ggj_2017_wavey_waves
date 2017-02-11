@@ -14,6 +14,11 @@ namespace Assets.Code.Weapons
 
         [SerializeField] public float CurrentRechargeProgress;
         [SerializeField] public float RechargeTime = 0.5f;
+        [SerializeField] public float SlowRechargeTime = 3f;
+        public float CurrentlyApplicableRechargeTime
+        {
+            get { return Switcher.IsFullySwitchedTo ? RechargeTime : SlowRechargeTime; }
+        }
         
         public SubscribedEvent<int> OnAmmoCountChanged;
         public SubscribedEvent OnEquipped;
@@ -42,7 +47,7 @@ namespace Assets.Code.Weapons
         {
             CurrentRechargeProgress += Time.deltaTime;
 
-            if (CurrentRechargeProgress > RechargeTime)
+            if (CurrentRechargeProgress > CurrentlyApplicableRechargeTime)
             {
                 CurrentAmmo++;
                 OnAmmoCountChanged.Fire(CurrentAmmo);
