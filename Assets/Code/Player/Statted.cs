@@ -1,5 +1,4 @@
-﻿using Assets.Code.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Assets.Code.Player
@@ -36,11 +35,22 @@ namespace Assets.Code.Player
             _health = _maximumHealth;
             HealthPercent = 1.0f;
         }
+        
+        [Command]
+        private void CmdSetHealth(float value)
+        {
+            RpcSetHealth(value);
+        }
 
         [ClientRpc]
-        public void RpcSetHealth(float value)
+        private void RpcSetHealth(float value)
         {
             Health = value;
+        }
+
+        public void NetSetHealth(float value)
+        {
+            CmdSetHealth(value);
         }
     }
 }
