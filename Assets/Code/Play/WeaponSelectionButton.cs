@@ -49,9 +49,9 @@ namespace Assets.Code.Play
 
             _onAmmoCountChanged = _session.Subject.OnAmmoCountChanged.Subscribe(OnAmmoCountChanged);
             _onUnequipped = _session.Subject.OnUnequipped.Subscribe(OnUnequipped);
-            _onSwitchedToStarted = _session.Subject.OnSwitchedToStarted.Subscribe(OnSwitchedToStarted);
-            _onSwitchedToFinished = _session.Subject.OnSwitchedToFinished.Subscribe(OnSwitchedToFinished);
-            _onSwitchedFromStarted = _session.Subject.OnSwitchedFromStarted.Subscribe(OnSwitchedFromStarted);
+            _onSwitchedToStarted = _session.Subject.Switcher.OnSwitchedToStarted.Subscribe(OnSwitchedToStarted);
+            _onSwitchedToFinished = _session.Subject.Switcher.OnSwitchedToFinished.Subscribe(OnSwitchedToFinished);
+            _onSwitchedFromStarted = _session.Subject.Switcher.OnSwitchedFromStarted.Subscribe(OnSwitchedFromStarted);
         }
 
         private void OnAmmoCountChanged(int ammo)

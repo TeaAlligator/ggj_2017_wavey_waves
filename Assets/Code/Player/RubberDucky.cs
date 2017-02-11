@@ -122,6 +122,9 @@ namespace Assets.Code.Player
 
         public void SwitchWeapons(Weapon targetWeapon)
         {
+            // we don't switch if the weapons are the same
+            if (targetWeapon == SelectedWeapon) return;
+
             if (_onWeaponSwitchedFrom != null)
             {
                 // if we're already switching weapons
@@ -138,8 +141,8 @@ namespace Assets.Code.Player
             {
                 _targetSwitchWeapon = targetWeapon;
 
-                _onWeaponSwitchedFrom = SelectedWeapon.OnSwitchedFromFinished.Subscribe(OnWeaponSwitchedFromFinished);
-                SelectedWeapon.SwitchFrom();
+                _onWeaponSwitchedFrom = SelectedWeapon.Switcher.OnSwitchedFromFinished.Subscribe(OnWeaponSwitchedFromFinished);
+                SelectedWeapon.Switcher.SwitchFrom();
 
                 SelectedWeapon = null;
             }
@@ -149,7 +152,7 @@ namespace Assets.Code.Player
             else
             {
                 SelectedWeapon = targetWeapon;
-                SelectedWeapon.SwitchTo();
+                SelectedWeapon.Switcher.SwitchTo();
             }
         }
 
@@ -165,7 +168,7 @@ namespace Assets.Code.Player
             
             // otherwise switch to our new weapon
             SelectedWeapon = _targetSwitchWeapon;
-            SelectedWeapon.SwitchTo();
+            SelectedWeapon.Switcher.SwitchTo();
         }
 
         [Command]
