@@ -7,24 +7,15 @@ namespace Assets.Code.Weapons
 {
     class BasicShooterWeapon : Weapon
     {
-        [SerializeField] private Transform _bulletOrigin;
         [SerializeField] private GameObject _projectilePrefab;
         
-        public override void Activate(RubberDucky sender)
+        public override void Activate(RubberDucky sender, Vector3 position, Quaternion rotation)
         {
-            CurrentAmmo--;
-            OnAmmoCountChanged.Fire(CurrentAmmo);
-            
-            Shoot(sender);
-        }
-
-        private void Shoot(RubberDucky sender)
-        {
-            var fab = Instantiate(_projectilePrefab, _bulletOrigin.position, _bulletOrigin.rotation);
+            var fab = Instantiate(_projectilePrefab, position, rotation);
             var projectile = fab.GetComponent<Projectile>();
             if (projectile != null)
                 projectile.RegisterWithSender(sender);
-            
+
             NetworkServer.Spawn(fab);
         }
     }

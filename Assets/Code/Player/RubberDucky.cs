@@ -106,7 +106,7 @@ namespace Assets.Code.Player
                     Vector3.up), 0);
 
             if (_betterInput.BasicDecencyMet &&
-                UnityEngine.Input.GetButtonUp("fire"))
+                UnityEngine.Input.GetButtonUp("fire") && SelectedWeapon != null)
             {
                 _audioPooler.PlaySound(new PooledAudioRequest
                 {
@@ -114,7 +114,7 @@ namespace Assets.Code.Player
                     Target = transform.position
                 });
 
-                CmdShoot();
+                CmdShoot(SelectedWeapon.WeaponOrigin.position, SelectedWeapon.WeaponOrigin.rotation);
             }
 
             if (_betterInput.BasicDecencyMet
@@ -233,12 +233,20 @@ namespace Assets.Code.Player
         }
 
         [Command]
-	    private void CmdShoot()
+	    private void CmdShoot(Vector3 position, Quaternion rotation)
 	    {
 	        if (SelectedWeapon == null || !SelectedWeapon.CanActivate()) return;
 
-            SelectedWeapon.Activate(this);
+            SelectedWeapon.Activate(this, position, rotation);
+            RpcShoot();
 	    }
+
+        [ClientRpc]
+        private void RpcShoot()
+        {
+            SelectedWeapon.CurrentAmmo--;
+            SelectedWeapon.OnAmmoCountChanged.Fire(SelectedWeapon.CurrentAmmo);
+        }
 
         [Command]
         private void CmdActivate()

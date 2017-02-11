@@ -8,6 +8,7 @@ namespace Assets.Code.Weapons
         [SerializeField] public string ScreenName;
         [SerializeField] public Sprite Icon;
         [SerializeField] public WeaponSwitchHandler Switcher;
+        [SerializeField] public Transform WeaponOrigin;
 
         [SerializeField] public int CurrentAmmo;
         [SerializeField] public int MaxAmmo = 3;
@@ -33,7 +34,7 @@ namespace Assets.Code.Weapons
             _onSwitchedToStarted = Switcher.OnSwitchedToStarted.Subscribe(OnSwitchedToStarted);
         }
 
-        public virtual void Activate(RubberDucky sender) {}
+        public virtual void Activate(RubberDucky sender, Vector3 position, Quaternion rotation) {}
 
         public virtual bool CanActivate()
         {
