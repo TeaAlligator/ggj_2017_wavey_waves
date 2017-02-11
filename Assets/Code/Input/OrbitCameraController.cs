@@ -15,6 +15,7 @@ namespace Assets.Code.Input
         [SerializeField] private float _positionLerpSpeed = 1f;
 
         [AutoResolve] private GroundRaycaster _groundRay;
+        [AutoResolve] private BetterInput _betterInput;
 
         protected void Awake()
         {
@@ -23,6 +24,8 @@ namespace Assets.Code.Input
 
         protected void Update()
         {
+            if (!_betterInput.IsMouseInWindow()) return;
+
             if (UnityEngine.Input.GetButtonDown("move_camera"))
             {
                 _focus.StartLerpPosition(_groundRay.GetMouseGroundPosition(UnityEngine.Input.mousePosition),

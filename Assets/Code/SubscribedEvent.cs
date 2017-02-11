@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Code
 {
@@ -10,17 +11,36 @@ namespace Assets.Code
 
     class SubscribedEvent
     {
+        private bool _firingLock;
         private readonly Dictionary<Guid, Action> _fireList;
+
+        private readonly HashSet<Guid> _removeQueue;
 
         public SubscribedEvent()
         {
+            _firingLock = false;
+
             _fireList = new Dictionary<Guid, Action>();
+            _removeQueue = new HashSet<Guid>();
         }
 
-        public void Fire()
+        public void Invoke()
         {
-            foreach (var fire in _fireList)
-                fire.Value();
+            _firingLock = true;
+            
+            foreach(var item in _fireList)
+                if (!_removeQueue.Contains(item.Key))
+                    item.Value.Invoke();
+
+            _firingLock = false;
+
+            if (_removeQueue.Count > 0)
+            {
+                foreach (var id in _removeQueue)
+                    _fireList.Remove(id);
+
+                _removeQueue.Clear();
+            }
         }
 
         public SubscribedEventToken Subscribe(Action call)
@@ -33,8 +53,8 @@ namespace Assets.Code
 
         private void RemoveSubscription(Guid id)
         {
-            if (_fireList.ContainsKey(id))
-                _fireList.Remove(id);
+            if (_firingLock) _removeQueue.Add(id);
+            else _fireList.Remove(id);
         }
     }
 

@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+﻿using Assets.Code.Extensions;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Code.Player
 {
-    class Statted : MonoBehaviour
+    class Statted : NetworkBehaviour
     {
         [SerializeField] private float _maximumHealth = 100f;
-        private float _health;
-
+        [SerializeField] private float _health;
         public float Health
         {
             get { return _health; }
-            set
+            private set
             {
                 var oldValue = _health;
 
@@ -34,6 +35,12 @@ namespace Assets.Code.Player
         {
             _health = _maximumHealth;
             HealthPercent = 1.0f;
+        }
+
+        [ClientRpc]
+        public void RpcSetHealth(float value)
+        {
+            Health = value;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Assets.Code.Projectiles
         {
             var stats = other.GetComponent<Statted>();
 
-            stats.Health -= _damage;
+            stats.RpcSetHealth(stats.Health - _damage);
 
             Destroy(gameObject);
         }

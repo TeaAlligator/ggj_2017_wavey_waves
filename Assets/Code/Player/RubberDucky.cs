@@ -4,39 +4,38 @@ using Assets.Code.Extensions;
 using Assets.Code.Input;
 using Assets.Code.Play;
 using Assets.Code.Projectiles;
+using Assets.Code.Timing;
 using Assets.Code.Weapons;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Networking;
 
 namespace Assets.Code.Player
 {
-    struct HealthChangedData
-    {
-        public float OldHealth;
-        public float NewHealth;
-        public float DeltaHealth;
-        public float Percent;
-    }
-
     class RubberDucky : NetworkBehaviour
     {
         [SerializeField] private NetworkIdentity _netId;
         [SerializeField] public Statted Stats;
+        [SerializeField] public Transform FacingTransform;
+        [SerializeField] public Transform WeaponParent;
+        [SerializeField] private DuckWorldspaceInfoCanvasController _worldspaceInfo;
 
         [AutoResolve] private GroundRaycaster _groundCast;
-        [AutoResolve] private ButtonKnower _buttonKnower;
+        [AutoResolve] private BetterInput _betterInput;
         [AutoResolve] private DuckInspectCanvasController _inspectDuck;
         [AutoResolve] private AudioPooler _audioPooler;
+        [AutoResolve] private Delayer _delayer;
         
         public List<Weapon> Weapons;
-        public Weapon SelectedWeapon;
         public List<AudioClip> HurtSounds;
         public List<AudioClip> AttackSounds;
         public List<AudioClip> BoomSounds;
         public List<AudioClip> MoveSounds;
 
+        public Weapon SelectedWeapon;
+        private Weapon _targetSwitchWeapon;
+
         private SubscribedEventToken _onHealthChanged;
+        private SubscribedEventToken _onWeaponSwitchedFrom;
 
         private Queue<ProjectileActivation> _activationQueue;
 
@@ -46,6 +45,12 @@ namespace Assets.Code.Player
 
             _onHealthChanged = Stats.OnHealthChanged.Subscribe(OnHealthChanged);
             _activationQueue = new Queue<ProjectileActivation>();
+
+            //if (!hasAuthority)
+            _worldspaceInfo.StartSession(new DuckInfoSession
+                {
+                    Subject = this
+                });
         }
 
         public override void OnStartLocalPlayer()
@@ -75,19 +80,19 @@ namespace Assets.Code.Player
 
         protected void Update()
         {
-            if (isLocalPlayer) HandleInput();
+            if (isLocalPlayer && _betterInput.IsMouseInWindow()) HandleInput();
         }
 
         private void HandleInput()
 		{
-			transform.rotation = Quaternion.Euler(0,
+			FacingTransform.rotation = Quaternion.Euler(0,
 				AngleMath.SignedAngleBetween(
 					Vector3.forward,
 					_groundCast.GetMouseGroundPosition(UnityEngine.Input.mousePosition) -
                     transform.position,
 					Vector3.up), 0);
 
-            if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))
+            if (!_betterInput.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("fire"))
             {
                 _audioPooler.PlaySound(new PooledAudioRequest
                 {
@@ -98,7 +103,7 @@ namespace Assets.Code.Player
                 CmdShoot();
             }
 
-            if (!_buttonKnower.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("activate"))
+            if (!_betterInput.WasJustADamnedButton() && UnityEngine.Input.GetButtonUp("activate"))
             {
                 _audioPooler.PlaySound(new PooledAudioRequest
                 {
@@ -113,6 +118,54 @@ namespace Assets.Code.Player
         public void AddActivatable(ProjectileActivation act)
         {
             _activationQueue.Enqueue(act);
+        }
+
+        public void SwitchWeapons(Weapon targetWeapon)
+        {
+            if (_onWeaponSwitchedFrom != null)
+            {
+                // if we're already switching weapons
+                // and haven't put our old weapon away yet
+                // then we can just change the targets
+                
+                _targetSwitchWeapon = targetWeapon;
+                return;
+            }
+
+            // if we currently have a weapon
+            // we gotta switch from it
+            if (SelectedWeapon != null)
+            {
+                _targetSwitchWeapon = targetWeapon;
+
+                _onWeaponSwitchedFrom = SelectedWeapon.OnSwitchedFromFinished.Subscribe(OnWeaponSwitchedFromFinished);
+                SelectedWeapon.SwitchFrom();
+
+                SelectedWeapon = null;
+            }
+
+            // but if we did not have a weapon
+            // then we can immediately switch to our new one
+            else
+            {
+                SelectedWeapon = targetWeapon;
+                SelectedWeapon.SwitchTo();
+            }
+        }
+
+        private void OnWeaponSwitchedFromFinished()
+        {
+            // clean up our subscription
+            _onWeaponSwitchedFrom.Cancel();
+            _onWeaponSwitchedFrom = null;
+
+            // it's possible we switched to no weapon
+            // gotta handle that
+            if (_targetSwitchWeapon == null) return;
+            
+            // otherwise switch to our new weapon
+            SelectedWeapon = _targetSwitchWeapon;
+            SelectedWeapon.SwitchTo();
         }
 
         [Command]
@@ -138,5 +191,13 @@ namespace Assets.Code.Player
             if (activation == null) return;
             activation.Activate();
         }
+    }
+
+    struct HealthChangedData
+    {
+        public float OldHealth;
+        public float NewHealth;
+        public float DeltaHealth;
+        public float Percent;
     }
 }

@@ -27,6 +27,7 @@ namespace Assets.Code.Play
         private WeaponSelectionButtonSession _session;
 
         private SubscribedEventToken _onAmmoCountChanged;
+        private SubscribedEventToken _onEquipped;
         private SubscribedEventToken _onUnequipped;
 
         protected void Awake()
