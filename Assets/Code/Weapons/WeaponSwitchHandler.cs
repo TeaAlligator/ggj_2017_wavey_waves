@@ -26,20 +26,15 @@ namespace Assets.Code.Weapons
         private float _lerpTime;
         private float _lerpPow;
         
-        public SubscribedEvent OnSwitchedToStarted;
-        public SubscribedEvent OnSwitchedToFinished;
-        public SubscribedEvent OnSwitchedFromStarted;
-        public SubscribedEvent OnSwitchedFromFinished;
+        public SubscribedEvent OnSwitchedToStarted = new SubscribedEvent();
+        public SubscribedEvent OnSwitchedToFinished = new SubscribedEvent();
+        public SubscribedEvent OnSwitchedFromStarted = new SubscribedEvent();
+        public SubscribedEvent OnSwitchedFromFinished = new SubscribedEvent();
 
         private Action _onFinished;
 
         protected void Awake()
         {
-            OnSwitchedToStarted = new SubscribedEvent();
-            OnSwitchedToFinished = new SubscribedEvent();
-            OnSwitchedFromStarted = new SubscribedEvent();
-            OnSwitchedFromFinished = new SubscribedEvent();
-
             // assume we start hidden
             if (!IsSwitchingTo && !IsSwitchingFrom) SwitchFromInstantly();
         }

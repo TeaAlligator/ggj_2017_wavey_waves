@@ -17,18 +17,20 @@ namespace Assets.Code.Weapons
         [SerializeField] public float SlowRechargeTime = 3f;
         public float CurrentlyApplicableRechargeTime
         {
-            get { return Switcher.IsFullySwitchedTo ? RechargeTime : SlowRechargeTime; }
+            get { return (!Switcher.IsFullySwitchedFrom) ? RechargeTime : SlowRechargeTime; }
         }
         
-        public SubscribedEvent<int> OnAmmoCountChanged;
-        public SubscribedEvent OnEquipped;
-        public SubscribedEvent OnUnequipped;
+        public SubscribedEvent<int> OnAmmoCountChanged = new SubscribedEvent<int>();
+        public SubscribedEvent OnEquipped = new SubscribedEvent();
+        public SubscribedEvent OnUnequipped = new SubscribedEvent();
+
+        private SubscribedEventToken _onSwitchedToStarted;
+        private SubscribedEventToken _onSwitchedFromStarted;
 
         protected virtual void Awake()
         {
-            OnAmmoCountChanged = new SubscribedEvent<int>();
-            OnEquipped = new SubscribedEvent();
-            OnUnequipped = new SubscribedEvent();
+            _onSwitchedFromStarted = Switcher.OnSwitchedFromStarted.Subscribe(OnSwitchedFromStarted);
+            _onSwitchedToStarted = Switcher.OnSwitchedToStarted.Subscribe(OnSwitchedToStarted);
         }
 
         public virtual void Activate(RubberDucky sender) {}
@@ -40,7 +42,8 @@ namespace Assets.Code.Weapons
 
         protected virtual void Update()
         {
-            if (CurrentAmmo < MaxAmmo) HandleRecharge();
+            if (!Switcher.IsSwitchingFrom && !Switcher.IsSwitchingTo &&
+                CurrentAmmo < MaxAmmo) HandleRecharge();
         }
 
         protected virtual void HandleRecharge()
@@ -67,9 +70,25 @@ namespace Assets.Code.Weapons
             OnEquipped.Invoke();
         }
 
+        private void OnSwitchedToStarted()
+        {
+            CurrentRechargeProgress = 0f;
+        }
+
+        private void OnSwitchedFromStarted()
+        {
+            CurrentRechargeProgress = 0f;
+        }
+
         public virtual void Unequip()
         {
             OnUnequipped.Invoke();
+        }
+
+        public virtual void TearDown()
+        {
+            _onSwitchedFromStarted.Cancel();
+            _onSwitchedToStarted.Cancel();
         }
     }
 }
