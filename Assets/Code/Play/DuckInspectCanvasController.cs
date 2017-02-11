@@ -54,16 +54,16 @@ namespace Assets.Code.Play
 
             _healthLerpSlider.value = _session.Subject.Stats.HealthPercent;
             _healthMechanicalSlider.value = _session.Subject.Stats.HealthPercent;
-            foreach(var projectile in _session.Subject.Weapons)
-                AddProjectileButton(projectile);
+            for (var i = 0; i < _session.Subject.Weapons.Count; i++)
+                AddProjectileButton(_session.Subject.Weapons[i], i);
 
             _session = session;
         }
 
-        private void AddProjectileButton(Weapon weapon)
+        private void AddProjectileButton(Weapon weapon, int weaponIndex)
         {
             var button = Instantiate(_weaponSelectionButtonPrefab);
-            button.StartSession(new WeaponSelectionButtonSession {Subject = weapon, OnSelected = () => OnProjectileSelected(weapon)});
+            button.StartSession(new WeaponSelectionButtonSession {Subject = weapon, OnSelected = () => OnProjectileSelected(weaponIndex) });
 
             button.transform.SetParent(_projectilesLayout.transform);
             button.transform.localScale = Vector3.one;
@@ -71,9 +71,9 @@ namespace Assets.Code.Play
             _projectileButtons.Add(button);
         }
 
-        private void OnProjectileSelected(Weapon weapon)
+        private void OnProjectileSelected(int weaponIndex)
         {
-            _session.Subject.SwitchWeapon(weapon);
+            _session.Subject.NetSwitchWeapon(weaponIndex);
         }
 
         private void OnSubjectHealthChanged(HealthChangedData data)

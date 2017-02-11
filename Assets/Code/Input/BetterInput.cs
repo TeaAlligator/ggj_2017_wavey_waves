@@ -6,6 +6,9 @@ namespace Assets.Code.Input
 {
     class BetterInput : MonoBehaviour, IResolveable
     {
+        public bool IsGameInFocus { get; private set; }
+        public bool BasicDecencyMet { get { return IsMouseInWindow() && IsGameInFocus && !WasJustADamnedButton();} }
+
         // http://answers.unity3d.com/questions/784617/how-do-i-block-touch-events-from-propagating-throu.html
         public bool WasJustADamnedButton()
         {
@@ -26,5 +29,7 @@ namespace Assets.Code.Input
                    UnityEngine.Input.mousePosition.x < Screen.width &&
                    UnityEngine.Input.mousePosition.y < Screen.height;
         }
+
+        protected void OnApplicationFocus(bool focus) { IsGameInFocus = focus; }
     }
 }

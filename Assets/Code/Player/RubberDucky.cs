@@ -32,6 +32,7 @@ namespace Assets.Code.Player
         public List<AudioClip> BoomSounds;
         public List<AudioClip> MoveSounds;
 
+        [SyncVar] private int _selectedWeaponIndex = -1;
         public Weapon SelectedWeapon;
         private Weapon _targetSwitchWeapon;
 
@@ -46,12 +47,23 @@ namespace Assets.Code.Player
 
             _onHealthChanged = Stats.OnHealthChanged.Subscribe(OnHealthChanged);
             _activationQueue = new Queue<ProjectileActivation>();
-
-            //if (!hasAuthority)
+            
             _worldspaceInfo.StartSession(new DuckInfoSession
                 {
                     Subject = this
                 });
+        }
+
+        public override void OnStartClient()
+        {
+            //Debug.Log("boop");
+            if (!isLocalPlayer)
+            {
+                //Debug.Log("boop 2");
+                HandleSwitchWeapon(_selectedWeaponIndex);
+            }
+
+            base.OnStartClient();
         }
 
         public override void OnStartLocalPlayer()
@@ -93,7 +105,7 @@ namespace Assets.Code.Player
                     transform.position,
                     Vector3.up), 0);
 
-            if (_betterInput.IsMouseInWindow() && !_betterInput.WasJustADamnedButton() &&
+            if (_betterInput.BasicDecencyMet &&
                 UnityEngine.Input.GetButtonUp("fire"))
             {
                 _audioPooler.PlaySound(new PooledAudioRequest
@@ -105,7 +117,7 @@ namespace Assets.Code.Player
                 CmdShoot();
             }
 
-            if (_betterInput.IsMouseInWindow() && !_betterInput.WasJustADamnedButton()
+            if (_betterInput.BasicDecencyMet
                 && UnityEngine.Input.GetButtonUp("activate"))
             {
                 _audioPooler.PlaySound(new PooledAudioRequest
@@ -118,15 +130,15 @@ namespace Assets.Code.Player
             }
 
             // switching weapons
-            if (_betterInput.IsMouseInWindow())
+            if (_betterInput.BasicDecencyMet)
             {
                 for (var i = 0; i < 10; i++)
                     if (i < Weapons.Count)
                         if (UnityEngine.Input.GetButtonDown(string.Format("equip_{0}", i.ToString(CultureInfo.InvariantCulture))))
-                            SwitchWeapon(Weapons[i]);
+                            NetSwitchWeapon(i);
 
                 if (UnityEngine.Input.GetButtonDown("equip_null"))
-                    SwitchWeapon(null);
+                    NetSwitchWeapon();
             }
         }
     
@@ -134,9 +146,14 @@ namespace Assets.Code.Player
         {
             _activationQueue.Enqueue(act);
         }
-
-        public void SwitchWeapon(Weapon targetWeapon)
+        
+        private void HandleSwitchWeapon(int weaponIndex)
         {
+            // bail if our index is out of range
+            if (weaponIndex >= Weapons.Count) return;
+
+            var targetWeapon = weaponIndex > -1 ? Weapons[weaponIndex] : null;
+
             // we don't switch if the weapons are the same
             if (targetWeapon == SelectedWeapon)
             {
@@ -146,7 +163,9 @@ namespace Assets.Code.Player
                     _onWeaponSwitchedFrom = null;
                 }
 
-                SelectedWeapon.Switcher.SwitchTo();
+                if (SelectedWeapon != null)
+                    SelectedWeapon.Switcher.SwitchTo();
+
                 return;
             }
 
@@ -172,11 +191,29 @@ namespace Assets.Code.Player
 
             // but if we did not have a weapon (or had the target one)
             // then we can immediately switch to our new one
-            else
+            else if (targetWeapon != null)
             {
                 SelectedWeapon = targetWeapon;
                 SelectedWeapon.Switcher.SwitchTo();
             }
+        }
+
+        public void NetSwitchWeapon(int weaponIndex = -1)
+        {
+            _selectedWeaponIndex = weaponIndex;
+            CmdSwitchWeapon(weaponIndex);
+        }
+
+        [ClientRpc]
+        private void RpcSwitchWeapon(int weaponIndex)
+        {
+            HandleSwitchWeapon(weaponIndex);
+        }
+
+        [Command]
+        private void CmdSwitchWeapon(int weaponIndex)
+        {
+            RpcSwitchWeapon(weaponIndex);
         }
 
         private void OnWeaponSwitchedFromFinished()

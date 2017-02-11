@@ -24,7 +24,7 @@ namespace Assets.Code.Input
 
         protected void Update()
         {
-            if (!_betterInput.IsMouseInWindow()) return;
+            if (!_betterInput.BasicDecencyMet) return;
 
             if (UnityEngine.Input.GetButtonDown("move_camera"))
             {
